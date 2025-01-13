@@ -5,9 +5,9 @@ namespace FribergCarRental.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly GenericRepository<User, ApplicationDbContext> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpAccessor;
-        public AuthService(GenericRepository<User, ApplicationDbContext> userRepository, IHttpContextAccessor httpContext)
+        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContext)
         {
             _userRepository = userRepository;
             _httpAccessor = httpContext;

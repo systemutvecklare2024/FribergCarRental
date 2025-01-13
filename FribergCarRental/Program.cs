@@ -19,7 +19,7 @@ namespace FribergCarRental
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<GenericRepository<User, ApplicationDbContext>, UserRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddSession(options =>
             {
