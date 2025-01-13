@@ -20,6 +20,7 @@ namespace FribergCarRental.Services
             if (user != null)
             {
                 _httpAccessor?.HttpContext?.Session.SetString("User", user.Username);
+                _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
                 return true;
             }
 

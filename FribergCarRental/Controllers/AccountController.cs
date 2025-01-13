@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FribergCarRental.Models;
 using FribergCarRental.Services;
+using FribergCarRental.Filters;
 
 namespace FribergCarRental.Controllers
 {
@@ -38,7 +39,14 @@ namespace FribergCarRental.Controllers
             return View(loginViewModel);
         }
 
+        public IActionResult Logout()
+        {
+            _authService.Logout();
 
+            return RedirectToAction("Index", "Home");
+        }
+
+        [SimpleAuthorize(Role = "Admin")]
         public IActionResult Secret()
         {
             HttpContextAccessor asd = new HttpContextAccessor();
@@ -46,6 +54,10 @@ namespace FribergCarRental.Controllers
             ViewBag.User = user;
             return View();
         }
-    }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+    }
 }
