@@ -20,6 +20,7 @@ namespace FribergCarRental
             builder.Services.AddControllersWithViews();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddSession(options =>
             {

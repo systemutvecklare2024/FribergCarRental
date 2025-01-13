@@ -3,19 +3,21 @@ using System.Linq.Expressions;
 
 namespace FribergCarRental.data
 {
-    public abstract class GenericRepository<T, CTX> : IRepository<T> 
+    public abstract class GenericRepository<T, TContext> : IRepository<T> 
         where T : class
-        where CTX : DbContext
+        where TContext : DbContext
     {
-        protected CTX dbContext;
+        protected TContext dbContext;
 
-        public GenericRepository(CTX context)
+        public GenericRepository(TContext context)
         {
             dbContext = context;
         }
+
         public virtual T Add(T entity)
         {
-            var addedEntity = dbContext.Add(entity).Entity;
+            var addedEntity = dbContext.Set<T>().Add(entity).Entity;
+            dbContext.SaveChanges();
 
             return addedEntity;
         }
@@ -28,18 +30,24 @@ namespace FribergCarRental.data
 
         public virtual void Delete(int id)
         {
-            dbContext.Remove(id);
+            var deleteEntity = Get(id);
+            dbContext.Set<T>().Remove(deleteEntity);
+            dbContext.SaveChanges();
         }
 
         public virtual IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            var result = dbContext.Set<T>().AsQueryable().Where(predicate);
-            return result;
+            return dbContext.Set<T>().AsQueryable().Where(predicate);
+        }
+
+        public virtual Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return dbContext.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
         public virtual T Get(int id)
         {
-            return dbContext.Find<T>(id);
+            return dbContext.Set<T>().Find(id);
         }
 
         public virtual void SaveChanges()
@@ -47,9 +55,35 @@ namespace FribergCarRental.data
             dbContext.SaveChanges();
         }
 
+        public virtual Task<List<T>> ToListAsync()
+        {
+            return dbContext.Set<T>().ToListAsync();
+        }
+
         public virtual T Update(T entity)
         {
-            return dbContext.Update(entity).Entity;
+            return dbContext.Set<T>().Update(entity).Entity;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<T> FindAsync(int? id)
+        {
+            return await dbContext.Set<T>().FindAsync(id);
+        }
+
+        public bool Any(Func<T, bool> value)
+        {
+            return dbContext.Set<T>().Any(value);
+        }
+
+        public void Remove(T entity)
+        {
+            dbContext.Set<T>().Remove(entity);
+            dbContext.SaveChanges();
         }
     }
 }

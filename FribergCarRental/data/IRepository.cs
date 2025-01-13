@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using FribergCarRental.Models;
+using System.Linq.Expressions;
 
 namespace FribergCarRental.data
 {
@@ -11,5 +12,15 @@ namespace FribergCarRental.data
         IEnumerable<T> All();
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
         void SaveChanges();
+
+        Task SaveChangesAsync();
+
+        Task<List<T>> ToListAsync();
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+
+        Task<T> FindAsync(int? id);
+
+        bool Any(Func<T, bool> value);
+        void Remove(T entity);
     }
 }
