@@ -55,6 +55,8 @@ namespace FribergCarRental.Controllers
             return View();
         }
 
+        [Route("AccessDenied")]
+        [Route("Account/AccessDenied")]
         public IActionResult AccessDenied()
         {
             return View();

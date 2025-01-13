@@ -34,6 +34,7 @@ namespace FribergCarRental.Services
 
         public void Logout()
         {
+            // TODO: Maybe not clear, but just remove the auth fields
             _httpAccessor?.HttpContext?.Session.Clear();
         }
 

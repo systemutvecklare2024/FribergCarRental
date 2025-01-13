@@ -16,7 +16,7 @@ namespace FribergCarRental.Filters
             }
             if (Role != null && !Role.Equals(role))
             {
-                context.Result = new RedirectResult("~/Account/AccessDenied");
+                context.Result = new RedirectResult("~/AccessDenied");
             }
         }
     }
