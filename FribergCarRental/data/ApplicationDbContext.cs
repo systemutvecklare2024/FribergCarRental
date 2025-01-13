@@ -5,7 +5,8 @@ namespace FribergCarRental.data
 {
     public class ApplicationDbContext : DbContext
     {
-        DbSet<Car> Cars { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

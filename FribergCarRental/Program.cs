@@ -18,6 +18,7 @@ namespace FribergCarRental
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<GenericRepository<User, ApplicationDbContext>, UserRepository>();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
