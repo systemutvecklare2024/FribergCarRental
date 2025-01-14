@@ -1,5 +1,4 @@
 using FribergCarRental.data;
-using FribergCarRental.Models;
 using FribergCarRental.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +25,7 @@ namespace FribergCarRental
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true; 
+                options.Cookie.IsEssential = true;
             });
 
             var app = builder.Build();
@@ -46,8 +45,14 @@ namespace FribergCarRental
             app.UseRouting();
 
             app.MapControllerRoute(
+                   name: "areas",
+                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            );
+
+            app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+            );
 
             app.Run();
         }
