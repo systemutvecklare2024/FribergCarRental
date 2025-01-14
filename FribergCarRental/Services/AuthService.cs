@@ -27,20 +27,48 @@ namespace FribergCarRental.Services
             return false;
         }
 
-        public bool Register (string username, string password)
+        public bool Register(string username, string email, string password)
         {
             throw new NotImplementedException();
         }
 
         public void Logout()
         {
-            // TODO: Maybe not clear, but just remove the auth fields
-            _httpAccessor?.HttpContext?.Session.Clear();
+            _httpAccessor?.HttpContext?.Session.SetString("User", "");
+            _httpAccessor?.HttpContext?.Session.SetString("Role", "");
         }
 
         public bool IsAuthenticated()
         {
-            throw new NotImplementedException();
+            var user = _httpAccessor?.HttpContext?.Session.GetString("User");
+            if(string.IsNullOrEmpty(user))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public User? GetCurrentUser()
+        {
+            var username = _httpAccessor?.HttpContext?.Session.GetString("User");
+            if (username == null){
+                return null;
+            }
+
+            return _userRepository.FindByUsername(username);
+        }
+
+        public bool IsAdmin()
+        {
+            var user = GetCurrentUser();
+            
+            if (user == null || !user.Role.Equals("Admin"))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
