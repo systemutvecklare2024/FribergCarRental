@@ -15,12 +15,13 @@ namespace FribergCarRental.Controllers
         }
 
 
-        // GET: Login
+        // GET: Account/Login
         public IActionResult Login()
         {
             return View();
         }
 
+        // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel loginViewModel)
@@ -35,10 +36,10 @@ namespace FribergCarRental.Controllers
                     ModelState.AddModelError("", "Invalid account or password.");
                 }
             }
-            //return View(user);
             return View(loginViewModel);
         }
 
+        // GET: Account/Logout
         public IActionResult Logout()
         {
             _authService.Logout();
@@ -46,6 +47,7 @@ namespace FribergCarRental.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // GET: Account/Secret
         [SimpleAuthorize(Role = "Admin")]
         public IActionResult Secret()
         {
@@ -55,6 +57,7 @@ namespace FribergCarRental.Controllers
             return View();
         }
 
+        // GET: Account/AccessDenied
         [Route("AccessDenied")]
         [Route("Account/AccessDenied")]
         public IActionResult AccessDenied()
