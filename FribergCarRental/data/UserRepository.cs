@@ -7,5 +7,10 @@ namespace FribergCarRental.data
         public UserRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public User FindByUsername(string username)
+        {
+            return Find(x => x.Username == username).FirstOrDefault();
+        }
     }
 }
