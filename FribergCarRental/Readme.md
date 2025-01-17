@@ -1,7 +1,24 @@
-﻿# Friberg Car Renting
+﻿# Friberg Car Rental
 
 ## Install
 - Update the field ``ConnectionStrings`` in ``appsettings.json``
 - Database setup inside ``Package Manager Console``
 	- ``Add-Migration Initial``
 	- ``Update-Database``
+
+## Användarkrav –User Stories
+Följande user stories har tagits fram och tydliggör vad kunder ska kunna göra 
+och vad administratören ska kunna göra.
+
+### Som kund vill jag kunna
+- lista alla bilar som finns att hyra
+- se en eller flera bilder för bilen jag funderar på att hyra
+- skapa en bokning för en viss bil med ett startdatum och ett slutdatum
+- få en bekräftelse på bokningen
+- se mina tidigare bokningar
+- ta bort en kommande bokning.
+
+### Som administratör vill jag kunna
+- Lista, lägga till, ändra och ta bort bilar
+- lista, lägga till, ändra och ta bort kunder
+- lista och ta bort beställningar.
