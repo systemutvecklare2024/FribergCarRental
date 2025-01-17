@@ -1,5 +1,7 @@
 ﻿using FribergCarRental.data;
+using FribergCarRental.data.UnitOfWork;
 using FribergCarRental.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FribergCarRental.Services
 {
@@ -7,15 +9,17 @@ namespace FribergCarRental.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpAccessor;
-        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContext)
+        private readonly IUserContactUnitOfWork _UserContactUnitOfWork;
+        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContext, IUserContactUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _httpAccessor = httpContext;
+            _UserContactUnitOfWork = unitOfWork;
         }
 
         public bool Login(string username, string password)
         {
-            var user = _userRepository.Find( u => (u.Username == username || u.Email == username) && u.Password == password).FirstOrDefault();
+            var user = _userRepository.Find(u => (u.Username == username || u.Email == username) && u.Password == password).FirstOrDefault();
 
             if (user != null)
             {
@@ -27,9 +31,43 @@ namespace FribergCarRental.Services
             return false;
         }
 
-        public bool Register(string username, string email, string password)
+        public async Task Register(RegisterViewModel registerViewModel)
         {
-            throw new NotImplementedException();
+            var user = new User
+            {
+                Username = registerViewModel.Username,
+                Email = registerViewModel.Email,
+                Password = registerViewModel.Password,
+                Contact = new Contact
+                {
+                    FirstName = registerViewModel.FirstName,
+                    LastName = registerViewModel.LastName,
+                    Address = registerViewModel.Address,
+                    City = registerViewModel.City,
+                    PostalCode = registerViewModel.PostalCode,
+                    Phone = registerViewModel.Phone
+                }
+            };
+
+            try
+            {
+                _UserContactUnitOfWork.BeginTransaction();
+
+                _UserContactUnitOfWork.UserRepository.Add(user);
+                await _UserContactUnitOfWork.SaveChangesAsync();
+
+                _UserContactUnitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _UserContactUnitOfWork.Rollback();
+                throw;
+            }
+        }
+
+        public bool Exists(string username, string email)
+        {
+            return _userRepository.Any(u => u.Username == username || u.Email == email);
         }
 
         public void Logout()
@@ -41,7 +79,7 @@ namespace FribergCarRental.Services
         public bool IsAuthenticated()
         {
             var user = _httpAccessor?.HttpContext?.Session.GetString("User");
-            if(string.IsNullOrEmpty(user))
+            if (string.IsNullOrEmpty(user))
             {
                 return false;
             }
@@ -52,17 +90,25 @@ namespace FribergCarRental.Services
         public User? GetCurrentUser()
         {
             var username = _httpAccessor?.HttpContext?.Session.GetString("User");
-            if (username == null){
+            if (username == null)
+            {
                 return null;
             }
 
             return _userRepository.FindByUsername(username);
         }
 
+        public string GetUsername()
+        {
+            var username = _httpAccessor?.HttpContext?.Session.GetString("User");
+
+            return Utils.StringHelper.Capitalize(username);
+        }
+
         public bool IsAdmin()
         {
             var user = GetCurrentUser();
-            
+
             if (user == null || !user.Role.Equals("Admin"))
             {
                 return false;

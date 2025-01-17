@@ -57,6 +57,49 @@ namespace FribergCarRental.Controllers
             return View();
         }
 
+        // GET: Account/Profile
+        public IActionResult Profile()
+        {
+
+            return View();
+        }
+
+        // GET: Account/Register
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel registerViewModel)
+        {
+
+            if(_authService.Exists(registerViewModel.Username, registerViewModel.Email))
+            {
+                ModelState.AddModelError("", "An account with this email or username already exists.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(registerViewModel);
+            }
+
+            try
+            {
+                _authService.Register(registerViewModel);
+            }
+
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occured while registring, please try again.");
+
+                return View(registerViewModel);
+            }
+            return RedirectToAction("Profile", "Account");
+        }
+
         // GET: Account/AccessDenied
         [Route("AccessDenied")]
         [Route("Account/AccessDenied")]
