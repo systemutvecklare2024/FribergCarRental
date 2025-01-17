@@ -1,4 +1,5 @@
 using FribergCarRental.data;
+using FribergCarRental.data.UnitOfWork;
 using FribergCarRental.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ namespace FribergCarRental
             builder.Services.AddScoped<IUserContactUnitOfWork, UserContactUnitOfWork>();
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
