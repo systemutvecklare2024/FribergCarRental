@@ -15,6 +15,7 @@ namespace FribergCarRental.Models
 
         [Required(ErrorMessage = "Price is required")]
         [Precision(10,2)]
+        [DataType(DataType.Currency)]
         public decimal Cost { get; set; }
     }
 }

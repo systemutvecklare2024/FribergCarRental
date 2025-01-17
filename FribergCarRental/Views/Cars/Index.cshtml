@@ -1,0 +1,27 @@
+﻿@model IEnumerable<FribergCarRental.Models.Car>
+
+@{
+    ViewData["Title"] = "Cars";
+}
+
+<h1>Cars</h1>
+
+<h4>Cars</h4>
+<hr />
+<div class="row">
+    @foreach (var car in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@car.ImageUrl" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@car.Id">Details</a>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
