@@ -1,4 +1,5 @@
 using FribergCarRental.data;
+using FribergCarRental.data.Seeding;
 using FribergCarRental.data.UnitOfWork;
 using FribergCarRental.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace FribergCarRental
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
             });
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -33,6 +35,13 @@ namespace FribergCarRental
             });
 
             var app = builder.Build();
+
+            // Seeding
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                ApplicationDbContextSeeder.SeedAsync(context).Wait();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
