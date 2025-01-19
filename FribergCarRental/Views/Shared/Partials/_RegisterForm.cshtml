@@ -1,0 +1,60 @@
+﻿@using FribergCarRental.Models.ViewModel
+@model RegisterViewModel
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, "E-postadress")
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "E-postadress*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Username, "Användarnamn")
+        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Användarnamn*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, "Lösenord")
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Lösenord*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, "Upprepa lösenord")
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Upprepa lösenord*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName, "Förnamn")
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Förnamn*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, "Efternamn")
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Efternamn*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address, "Adress")
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Adress*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.City, "Ort")
+        @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "Ort*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PostalCode, "Postnummer")
+        @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control", placeholder = "Postnummer*" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone, "Telefonnummer")
+        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Telefonnummer*" })
+    </div>
+
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+    <button type="submit" class="btn btn-success btn-block">Registrera</button>
+}

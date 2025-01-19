@@ -58,16 +58,20 @@ namespace FribergCarRental.Services
 
                 _UserContactUnitOfWork.Commit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _UserContactUnitOfWork.Rollback();
                 throw;
             }
+
+            // Login
+            _httpAccessor?.HttpContext?.Session.SetString("User", user.Username);
+            _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
         }
 
-        public bool Exists(string username, string email)
+        public bool Exists(string email)
         {
-            return _userRepository.Any(u => u.Username == username || u.Email == email);
+            return _userRepository.Any(u =>  u.Email == email);
         }
 
         public void Logout()

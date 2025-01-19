@@ -12,6 +12,6 @@ namespace FribergCarRental.Services
         User? GetCurrentUser();
         bool IsAdmin();
         public string GetUsername();
-        bool Exists(string username, string email);
+        bool Exists(string email);
     }
 }

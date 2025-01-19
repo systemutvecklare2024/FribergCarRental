@@ -14,6 +14,18 @@ namespace FribergCarRental.Controllers
             _authService = authService;
         }
 
+        public IActionResult LoginOrRegister(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+
+            var accountViewModel = new AccountViewModel
+            {
+                LoginViewModel = new LoginViewModel(),
+                RegisterViewModel = new RegisterViewModel()
+            };
+
+            return View(accountViewModel);
+        }
 
         // GET: Account/Login
         public IActionResult Login()
@@ -24,13 +36,13 @@ namespace FribergCarRental.Controllers
         // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel loginViewModel)
+        public IActionResult Login(LoginViewModel loginViewModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                if (_authService.Login(loginViewModel.Account, loginViewModel.Password))
+                if (_authService.Login(loginViewModel.Email, loginViewModel.Password))
                 {
-                    return RedirectToAction("Secret");
+                    return Redirect(returnUrl ?? Url.Action("Index", "Home"));
                 } else
                 {
                     ModelState.AddModelError("", "Invalid account or password.");
@@ -76,7 +88,7 @@ namespace FribergCarRental.Controllers
         public IActionResult Register(RegisterViewModel registerViewModel)
         {
 
-            if(_authService.Exists(registerViewModel.Username, registerViewModel.Email))
+            if(_authService.Exists(registerViewModel.Email))
             {
                 ModelState.AddModelError("", "An account with this email or username already exists.");
             }
@@ -91,7 +103,7 @@ namespace FribergCarRental.Controllers
                 _authService.Register(registerViewModel);
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("", "An error occured while registring, please try again.");
 
