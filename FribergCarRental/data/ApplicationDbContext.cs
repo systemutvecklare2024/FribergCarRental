@@ -10,7 +10,7 @@ namespace FribergCarRental.data
         public DbSet<Contact> Contacts { get; set; }
 
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<Receipt> Reciepts { get; set; }
+        //public DbSet<Receipt> Reciepts { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -22,11 +22,11 @@ namespace FribergCarRental.data
             base.OnModelCreating(modelBuilder);
 
             // One-to-one relationship between Booking and Receipt
-            modelBuilder
-                .Entity<Receipt>()
-                .HasOne(e => e.Booking)
-                .WithOne(e => e.Receipt)
-                .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder
+            //    .Entity<Receipt>()
+            //    .HasOne(e => e.Booking)
+            //    .WithOne(e => e.Receipt)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
 
             // One-to-one relationship between User and Contact
@@ -36,61 +36,5 @@ namespace FribergCarRental.data
                 .HasForeignKey<Contact>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
-        /// <summary>
-        /// Used to seed database with initial admin user
-        /// </summary>
-        /// <param name="optionsBuilder"></param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder
-        .UseSeeding((context, _) =>
-        {
-            var user = context.Set<User>().FirstOrDefault(b => b.Username == "admin");
-
-            if (user == null)
-            {
-                context.Set<User>().Add(new User
-                {
-                    Username = "admin",
-                    Email = "Admin@admin.com",
-                    Password = "admin",
-                    Role = "Admin",
-                    Contact = new Contact
-                    {
-                        FirstName = "Admin",
-                        LastName = "Admin",
-                        Address = "Admin",
-                        City = "Admin",
-                        PostalCode = "127001",
-                        Phone = "127001"
-                    }
-                });
-                context.SaveChanges();
-            }
-        })
-        .UseAsyncSeeding(async (context, _, cancellationToken) =>
-        {
-            var user = await context.Set<User>().FirstOrDefaultAsync(b => b.Username == "admin", cancellationToken);
-            if (user == null)
-            {
-                context.Set<User>().Add(new User
-                {
-                    Username = "admin",
-                    Email = "Admin@admin.com",
-                    Password = "admin",
-                    Role = "Admin",
-                    Contact = new Contact
-                    {
-                        FirstName = "Admin",
-                        LastName = "Admin",
-                        Address = "Admin",
-                        City = "Admin",
-                        PostalCode = "127001",
-                        Phone = "127001"
-                    }
-                });
-                await context.SaveChangesAsync(cancellationToken);
-            }
-        });
     }
 }
