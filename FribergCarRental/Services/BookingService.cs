@@ -1,5 +1,5 @@
 ﻿using FribergCarRental.data;
-using FribergCarRental.Models;
+using FribergCarRental.Models.Entities;
 
 namespace FribergCarRental.Services
 {

@@ -1,4 +1,5 @@
-﻿using FribergCarRental.Models;
+﻿using FribergCarRental.Models.Entities;
+using FribergCarRental.Models.ViewModel;
 
 namespace FribergCarRental.Services
 {

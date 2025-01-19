@@ -1,4 +1,4 @@
-﻿using FribergCarRental.Models;
+﻿using FribergCarRental.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FribergCarRental.data

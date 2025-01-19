@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FribergCarRental.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250117130418_Initial")]
+    [Migration("20250119143900_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace FribergCarRental.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FribergCarRental.Models.Booking", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,11 +42,12 @@ namespace FribergCarRental.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("ReceiptId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 
@@ -54,23 +55,16 @@ namespace FribergCarRental.Migrations
 
                     b.HasIndex("ContactId");
 
-                    b.HasIndex("ReceiptId")
-                        .IsUnique();
-
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("FribergCarRental.Models.Car", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Cost")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -80,12 +74,16 @@ namespace FribergCarRental.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("PricePerDay")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("FribergCarRental.Models.Contact", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,58 +126,7 @@ namespace FribergCarRental.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("FribergCarRental.Models.Receipt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Cost")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LicensePlate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
-
-                    b.Property<decimal>("TotalCost")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reciepts");
-                });
-
-            modelBuilder.Entity("FribergCarRental.Models.User", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,51 +158,37 @@ namespace FribergCarRental.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FribergCarRental.Models.Booking", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.Booking", b =>
                 {
-                    b.HasOne("FribergCarRental.Models.Car", "Car")
+                    b.HasOne("FribergCarRental.Models.Entities.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FribergCarRental.Models.Contact", "Contact")
+                    b.HasOne("FribergCarRental.Models.Entities.Contact", "Contact")
                         .WithMany()
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FribergCarRental.Models.Receipt", "Receipt")
-                        .WithOne("Booking")
-                        .HasForeignKey("FribergCarRental.Models.Booking", "ReceiptId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Car");
 
                     b.Navigation("Contact");
-
-                    b.Navigation("Receipt");
                 });
 
-            modelBuilder.Entity("FribergCarRental.Models.Contact", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.Contact", b =>
                 {
-                    b.HasOne("FribergCarRental.Models.User", "User")
+                    b.HasOne("FribergCarRental.Models.Entities.User", "User")
                         .WithOne("Contact")
-                        .HasForeignKey("FribergCarRental.Models.Contact", "UserId")
+                        .HasForeignKey("FribergCarRental.Models.Entities.Contact", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FribergCarRental.Models.Receipt", b =>
-                {
-                    b.Navigation("Booking")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FribergCarRental.Models.User", b =>
+            modelBuilder.Entity("FribergCarRental.Models.Entities.User", b =>
                 {
                     b.Navigation("Contact")
                         .IsRequired();

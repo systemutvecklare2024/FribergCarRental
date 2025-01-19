@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FribergCarRental.Models
+namespace FribergCarRental.Models.Entities
 {
     [Index(nameof(Username), nameof(Email), IsUnique = true)]
     public class User

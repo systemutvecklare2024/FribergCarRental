@@ -1,4 +1,4 @@
-namespace FribergCarRental.Models
+namespace FribergCarRental.Models.ViewModel
 {
     public class ErrorViewModel
     {

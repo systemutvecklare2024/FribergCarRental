@@ -1,4 +1,6 @@
-﻿using FribergCarRental.Services;
+﻿using FribergCarRental.Filters;
+using FribergCarRental.Models.ViewModel;
+using FribergCarRental.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FribergCarRental.Controllers

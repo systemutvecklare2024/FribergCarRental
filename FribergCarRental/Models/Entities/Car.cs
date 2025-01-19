@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace FribergCarRental.Models
+namespace FribergCarRental.Models.Entities
 {
     public class Car
     {
@@ -14,8 +14,8 @@ namespace FribergCarRental.Models
         public string ImageUrl { get; set; }
 
         [Required(ErrorMessage = "Price is required")]
-        [Precision(10,2)]
+        [Precision(10, 2)]
         [DataType(DataType.Currency)]
-        public decimal Cost { get; set; }
+        public decimal PricePerDay { get; set; }
     }
 }

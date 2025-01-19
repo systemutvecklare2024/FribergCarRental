@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FribergCarRental.Models;
 using FribergCarRental.data;
 using FribergCarRental.Filters;
+using FribergCarRental.Models.Entities;
 
 namespace FribergCarRental.Areas.Admin.Controllers
 {

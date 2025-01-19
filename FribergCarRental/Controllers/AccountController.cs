@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FribergCarRental.Models;
 using FribergCarRental.Services;
 using FribergCarRental.Filters;
+using FribergCarRental.Models.ViewModel;
 
 namespace FribergCarRental.Controllers
 {

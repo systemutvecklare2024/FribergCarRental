@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace FribergCarRental.Models
+namespace FribergCarRental.Models.Entities
 {
     public class Receipt
     {

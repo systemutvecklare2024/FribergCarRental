@@ -1,7 +1,7 @@
 ﻿using FribergCarRental.data;
 using FribergCarRental.data.UnitOfWork;
-using FribergCarRental.Models;
-using Microsoft.EntityFrameworkCore;
+using FribergCarRental.Models.Entities;
+using FribergCarRental.Models.ViewModel;
 
 namespace FribergCarRental.Services
 {
