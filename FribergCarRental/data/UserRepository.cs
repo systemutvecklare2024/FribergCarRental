@@ -13,5 +13,11 @@ namespace FribergCarRental.data
         {
             return Find(x => x.Username == username).FirstOrDefault();
         }
+
+        public User FindByUsernameWithContact(string username)
+        {
+            return dbContext.Set<User>().Where(x => x.Username == username).Include(x => x.Contact).FirstOrDefault();
+
+        }
     }
 }

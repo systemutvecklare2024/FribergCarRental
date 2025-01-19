@@ -4,6 +4,8 @@ namespace FribergCarRental.Services
 {
     public interface IBookingService
     {
-        IEnumerable<Car> GetAllCars();
+        bool CarExist(int id);
+        Contact GetContactFromUsername(string username);
+        User GetUserFromUsernameWithContact(string username);
     }
 }

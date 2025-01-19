@@ -1,26 +1,30 @@
-﻿@model IEnumerable<FribergCarRental.Models.Car>
+﻿@using FribergCarRental.Models.Entities
+@using FribergCarRental.Services
+
+@model IEnumerable<Car>
+@inject IAuthService AuthService
 
 @{
-    ViewData["Title"] = "Cars";
+    ViewData["Title"] = "Våra bilar";
 }
 
-<h1>Cars</h1>
+<h1>Bilar</h1>
 
-<h4>Cars</h4>
 <hr />
-<div class="row">
+<div class="cards row">
     @foreach (var car in Model)
     {
-        <div class="col-md-4">
+        <div class="card-container col-md-4">
             <div class="card">
-                <img src="@car.ImageUrl" class="card-img-top" alt="...">
+                <img src="@car.ImageUrl" class="card-img-top" alt="@car.Model">
+                
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@car.Id">Details</a>
+                    <h5 class="card-title">@car.Model</h5>
+                    <p class="card-text">Desc</p>
+                    <p class="card-text"><strong>Pris:</strong> @car.PricePerDay SEK per dygn.</p>
+                    <a class="btn btn-primary" asp-controller="Booking" asp-action="Create" asp-route-carId="@car.Id">Boka</a>
                 </div>
             </div>
-
         </div>
     }
 </div>

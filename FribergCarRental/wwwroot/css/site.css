@@ -99,3 +99,19 @@ body {
 .navbar-margin {
     padding: 0.5rem 2rem;
 }
+
+.main-padding {
+    padding-bottom: 7rem !important;
+}
+
+.card {
+    height: 25rem;
+}
+
+.card-container {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    margin-bottom: 0.5rem;
+}
