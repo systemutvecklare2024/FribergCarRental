@@ -1,6 +1,5 @@
 ﻿using FribergCarRental.data;
 using FribergCarRental.Filters;
-using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
 using FribergCarRental.Services;
 using Microsoft.AspNetCore.Mvc;

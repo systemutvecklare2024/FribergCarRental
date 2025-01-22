@@ -14,11 +14,11 @@ och vad administratören ska kunna göra.
 - [x] lista alla bilar som finns att hyra
 - [x] se en eller flera bilder för bilen jag funderar på att hyra
 - [x] skapa en bokning för en viss bil med ett startdatum och ett slutdatum
-- få en bekräftelse på bokningen
-- se mina tidigare bokningar
-- ta bort en kommande bokning.
+- [x] få en bekräftelse på bokningen
+- [x] se mina tidigare bokningar
+- [x] ta bort en kommande bokning.
 
 ### Som administratör vill jag kunna
-- Lista, lägga till, ändra och ta bort bilar
+- [x] Lista, lägga till, ändra och ta bort bilar
 - lista, lägga till, ändra och ta bort kunder
 - lista och ta bort beställningar.
