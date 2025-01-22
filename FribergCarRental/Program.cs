@@ -23,6 +23,7 @@ namespace FribergCarRental
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IContactRepository, ContactRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<IUserContactUnitOfWork, UserContactUnitOfWork>();
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();

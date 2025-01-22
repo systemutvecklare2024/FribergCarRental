@@ -10,7 +10,6 @@ namespace FribergCarRental.data
         public DbSet<Contact> Contacts { get; set; }
 
         public DbSet<Booking> Bookings { get; set; }
-        //public DbSet<Receipt> Reciepts { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -21,13 +20,17 @@ namespace FribergCarRental.data
         {
             base.OnModelCreating(modelBuilder);
 
-            // One-to-one relationship between Booking and Receipt
-            //modelBuilder
-            //    .Entity<Receipt>()
-            //    .HasOne(e => e.Booking)
-            //    .WithOne(e => e.Receipt)
-            //    .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.User)
+                .WithMany(b => b.Bookings) 
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Car)
+                .WithMany(b => b.Bookings) 
+                .HasForeignKey(b => b.CarId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // One-to-one relationship between User and Contact
             modelBuilder.Entity<User>()

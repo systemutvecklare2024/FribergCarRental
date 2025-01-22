@@ -1,5 +1,6 @@
 ﻿using FribergCarRental.data;
 using FribergCarRental.Models.Entities;
+using FribergCarRental.Models.ViewModel;
 
 namespace FribergCarRental.Services
 {
@@ -7,11 +8,13 @@ namespace FribergCarRental.Services
     {
         private readonly ICarRepository _carRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public BookingService(ICarRepository carRepository, IUserRepository userRepository)
+        public BookingService(ICarRepository carRepository, IUserRepository userRepository, IBookingRepository bookingRepository)
         {
             _carRepository = carRepository;
             _userRepository = userRepository;
+            _bookingRepository = bookingRepository;
         }
 
         public bool CarExist(int id)
@@ -28,6 +31,28 @@ namespace FribergCarRental.Services
         public User GetUserFromUsernameWithContact(string username)
         {
             return _userRepository.FindByUsernameWithContact(username);
+        }
+
+        public Booking CreateBooking(Car car, User user, DateTime start, DateTime end)
+        {
+            var startDate = DateOnly.FromDateTime(start);
+            var endDate = DateOnly.FromDateTime(end);
+
+            var timeSpan = (end - start).Days;
+            var totalCost = car.PricePerDay * timeSpan;
+
+            var booking = new Booking
+            {
+                CarId = car.Id,
+                UserId = user.Id,
+                StartDate = startDate,
+                EndDate = endDate,
+                TotalCost = totalCost
+            };
+
+            var added = _bookingRepository.Add(booking);
+
+            return added;
         }
     }
 }

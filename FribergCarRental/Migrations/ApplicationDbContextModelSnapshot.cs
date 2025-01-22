@@ -33,9 +33,6 @@ namespace FribergCarRental.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ContactId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
@@ -46,11 +43,14 @@ namespace FribergCarRental.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
                 });
@@ -158,20 +158,20 @@ namespace FribergCarRental.Migrations
             modelBuilder.Entity("FribergCarRental.Models.Entities.Booking", b =>
                 {
                     b.HasOne("FribergCarRental.Models.Entities.Car", "Car")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("FribergCarRental.Models.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("FribergCarRental.Models.Entities.User", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Car");
 
-                    b.Navigation("Contact");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FribergCarRental.Models.Entities.Contact", b =>
@@ -185,8 +185,15 @@ namespace FribergCarRental.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FribergCarRental.Models.Entities.Car", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
             modelBuilder.Entity("FribergCarRental.Models.Entities.User", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("Contact")
                         .IsRequired();
                 });

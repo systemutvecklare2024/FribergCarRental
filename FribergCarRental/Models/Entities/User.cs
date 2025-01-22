@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FribergCarRental.Models.Entities
 {
@@ -8,14 +8,24 @@ namespace FribergCarRental.Models.Entities
     public class User
     {
         public int Id { get; set; }
+        
         public virtual Contact Contact { get; set; }
 
-        [Required(ErrorMessage = "Username is required")]
+        public ICollection<Booking> Bookings { get; set; }
+
+        [Required(ErrorMessage = "Användarnamn är obligatoriskt")]
+        [Display(Name = "Användarnamn")]
         public string Username { get; set; }
-        [Required(ErrorMessage = "Email is required")]
+
+        [Required(ErrorMessage = "E-postadress är obligatoriskt")]
+        [Display(Name = "E-postadress")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Password is required")]
+
+        [Required(ErrorMessage = "Lösenord är obligatoriskt")]
+        [Display(Name = "Lösenord")]
         public string Password { get; set; }
+
+        [Display(Name = "Roll")]
         public string Role { get; set; } = "Customer";
     }
 }

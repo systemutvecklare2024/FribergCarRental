@@ -1,4 +1,6 @@
-﻿using FribergCarRental.Filters;
+﻿using FribergCarRental.data;
+using FribergCarRental.Filters;
+using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
 using FribergCarRental.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +11,13 @@ namespace FribergCarRental.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IAuthService _authService;
+        private readonly ICarRepository _carRepository;
 
-        public BookingController(IBookingService bookingService, IAuthService authService)
+        public BookingController(IBookingService bookingService, IAuthService authService, ICarRepository carRepository)
         {
             _bookingService = bookingService;
             _authService = authService;
+            _carRepository = carRepository;
         }
 
         // GET: Booking/Index
@@ -30,7 +34,8 @@ namespace FribergCarRental.Controllers
                 return RedirectToAction("LoginOrRegister", "Account", new { returnUrl = Url.Action("Create", "Booking", new { carId }) });
             }
 
-            if (!_bookingService.CarExist(carId))
+            var car = _carRepository.Get(carId);
+            if (car == null)
             {
                 return NotFound("Bil hittades ej");
             }
@@ -41,23 +46,12 @@ namespace FribergCarRental.Controllers
                 return NotFound("Kund hittades ej");
             }
 
-            var contact = _bookingService.GetContactFromUsername(username);
-            if (contact == null)
-            {
-                return NotFound("Kund hittades ej");
-            }
-
             var model = new CreateBookingViewModel
             {
                 CarId = carId,
-                ContactId = contact.Id,
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddDays(1)
             };
-
-            model.StartDateString = model.StartDate.ToString("yyyy-MM-dd");
-            model.EndDateString = model.EndDate.ToString("yyyy-MM-dd");
-
 
             return View(model);
         }
@@ -68,11 +62,39 @@ namespace FribergCarRental.Controllers
         [SimpleAuthorize]
         public IActionResult Create(CreateBookingViewModel createBookingViewModel)
         {
+            var user = _authService.GetCurrentUser();
+            if (user == null)
+            {
+                return RedirectToAction(
+                    "LoginOrRegister", 
+                    "Account", 
+                    new { returnUrl = Url.Action("Create", "Booking", new { createBookingViewModel.CarId }) });
+            }
+
             if (ModelState.IsValid)
             {
+                var car = _carRepository.Get(createBookingViewModel.CarId);
+                if (car == null)
+                {
+                    // Car not found, wtf do we do now?
+                    return RedirectToAction("Index");
+                }
 
+                var booking = _bookingService.CreateBooking(
+                    car,
+                    user,
+                    createBookingViewModel.StartDate,
+                    createBookingViewModel.EndDate);
+
+                return RedirectToAction("Confirmation", booking);
             }
+
             return View(createBookingViewModel);
+        }
+
+        public IActionResult Confirmation(Booking booking)
+        {
+            return View(booking);
         }
     }
 }

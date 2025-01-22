@@ -7,5 +7,6 @@ namespace FribergCarRental.Services
         bool CarExist(int id);
         Contact GetContactFromUsername(string username);
         User GetUserFromUsernameWithContact(string username);
+        Booking CreateBooking(Car car, User user, DateTime startDate, DateTime endDate);
     }
 }

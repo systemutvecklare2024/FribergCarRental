@@ -1,0 +1,43 @@
+﻿@using FribergCarRental.Models.Entities
+@model Booking
+
+@{
+    ViewData["Title"] = "Booking Confirmation";
+}
+
+<div>
+    <h4>Booking Confirmation</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Email) <!-- Assuming Contact has a Name -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Email) <!-- Display the actual contact name -->
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Car.Id) <!-- DisplayNameFor the car model -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Car.Id) <!-- Display the car model -->
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate) <!-- DisplayNameFor the start date -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate) <!-- Display the start date -->
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate) <!-- DisplayNameFor the end date -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate) <!-- Display the end date -->
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalCost) <!-- DisplayNameFor the total cost -->
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalCost) <!-- Display the total cost -->
+        </dd>
+    </dl>
+</div>

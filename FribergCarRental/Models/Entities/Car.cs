@@ -7,6 +7,8 @@ namespace FribergCarRental.Models.Entities
     {
         public int Id { get; set; }
 
+        public ICollection<Booking> Bookings { get; set; }
+
         [Required(ErrorMessage = "Model is required")]
         public string Model { get; set; }
 

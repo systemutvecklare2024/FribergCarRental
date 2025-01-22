@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace FribergCarRental.Models.Entities
 {
@@ -8,6 +8,7 @@ namespace FribergCarRental.Models.Entities
         public int Id { get; set; }
 
         // Relations
+        [JsonIgnore]
         public virtual User User { get; set; }
         public int UserId { get; set; }
 
