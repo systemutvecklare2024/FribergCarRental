@@ -16,33 +16,45 @@ namespace FribergCarRental.Controllers
 
         public IActionResult LoginOrRegister(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-
             var accountViewModel = new AccountViewModel
             {
-                LoginViewModel = new LoginViewModel(),
-                RegisterViewModel = new RegisterViewModel()
+                LoginViewModel = new LoginViewModel
+                {
+                    ReturnUrl = returnUrl
+                },
+                RegisterViewModel = new RegisterViewModel
+                {
+                    ReturnUrl = returnUrl
+                }
             };
 
             return View(accountViewModel);
         }
 
         // GET: Account/Login
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
-            return View();
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl ?? string.Empty
+            };
+            return View(model);
         }
 
         // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel loginViewModel, string returnUrl)
+        public IActionResult Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
                 if (_authService.Login(loginViewModel.Email, loginViewModel.Password))
                 {
-                    return Redirect(returnUrl ?? Url.Action("Index", "Home"));
+                    if(string.IsNullOrEmpty(loginViewModel.ReturnUrl))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return Redirect(loginViewModel.ReturnUrl);
                 } else
                 {
                     ModelState.AddModelError("", "Invalid account or password.");

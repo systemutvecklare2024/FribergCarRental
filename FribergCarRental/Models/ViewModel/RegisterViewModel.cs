@@ -40,5 +40,7 @@ namespace FribergCarRental.Models.ViewModel
         [Required(ErrorMessage = "Telefonnummer är obligatoriskt")]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
+
+        public string? ReturnUrl { get; set; }
     }
 }
