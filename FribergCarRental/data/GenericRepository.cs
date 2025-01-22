@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FribergCarRental.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace FribergCarRental.data
@@ -84,6 +85,15 @@ namespace FribergCarRental.data
         {
             dbContext.Set<T>().Remove(entity);
             dbContext.SaveChanges();
+        }
+        public IQueryable<T> Include(Expression<Func<T, object>> includeExpression)
+        {
+            return dbContext.Set<T>().Include(includeExpression);
+        }
+
+        public IQueryable<T> Query()
+        {
+            return dbContext.Set<T>();
         }
     }
 }

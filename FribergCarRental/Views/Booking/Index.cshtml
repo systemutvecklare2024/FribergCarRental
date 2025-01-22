@@ -1,0 +1,81 @@
+﻿@using FribergCarRental.Models.ViewModel
+@model IEnumerable<BookingIndexViewModel>
+
+@{
+    ViewData["Title"] = "Bokningar";
+}
+
+<h3>Kommande bokningar</h3>
+
+@if (Model.Any(b => b.IsUpcoming))
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bil</th>
+                <th>Startdatum</th>
+                <th>Slutdatum</th>
+                <th>Total kostnad</th>
+                <th>Åtgärd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Where(b => b.IsUpcoming))
+            {
+                <tr>
+                    <td>@booking.CarModel</td>
+                    <td>@booking.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@booking.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>@booking.TotalCost.ToString("F2") SEK</td>
+                    <td>
+                        <form asp-controller="Booking"
+                              asp-action="Delete"
+                              asp-route-id="@booking.Id"
+                              method="post"
+                              style="display:inline;"
+                              onsubmit="return confirm('Är ni säker ni vill avboka?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Avboka</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Du har inga kommande bokningar.</p>
+}
+
+<hr />
+
+<h3>Tidigare bokningar</h3>
+@if (Model.Any(b => !b.IsUpcoming))
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bil</th>
+                <th>Startdatum</th>
+                <th>Slutdatum</th>
+                <th>Total kostnad</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Where(b => !b.IsUpcoming))
+            {
+                <tr>
+                    <td>@booking.CarModel</td>
+                    <td>@booking.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@booking.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>@booking.TotalCost.ToString("F2") SEK</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Du har inga tidigare bokningar.</p>
+}

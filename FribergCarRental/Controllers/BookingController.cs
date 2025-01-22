@@ -23,7 +23,10 @@ namespace FribergCarRental.Controllers
         // GET: Booking/Index
         public IActionResult Index()
         {
-            return View();
+            var userId = _authService.GetCurrentUser()?.Id;
+            var bookings = _bookingService.GetBookingsForUser(userId);
+
+            return View(bookings);
         }
 
         // GET: Booking/Create
@@ -86,14 +89,35 @@ namespace FribergCarRental.Controllers
                     createBookingViewModel.StartDate,
                     createBookingViewModel.EndDate);
 
-                return RedirectToAction("Confirmation", booking);
+                return RedirectToAction("Confirmation", new { bookingId = booking.Id });
             }
 
             return View(createBookingViewModel);
         }
 
-        public IActionResult Confirmation(Booking booking)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
         {
+            var booking = _bookingService.GetById(id);
+            if(booking == null)
+            {
+                return NotFound("Kan ej hitta angiven bokning");
+            }
+
+            _bookingService.RemoveBooking(booking);
+
+            return RedirectToAction("Index");
+        }
+
+        [SimpleAuthorize]
+        public IActionResult Confirmation(int bookingId)
+        {
+            var booking = _bookingService.GetById(bookingId);
+            if (booking.UserId != _authService.GetCurrentUserId())
+            {
+                return RedirectToAction("Index ");
+            }
             return View(booking);
         }
     }

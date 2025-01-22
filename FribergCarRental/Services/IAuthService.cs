@@ -10,6 +10,7 @@ namespace FribergCarRental.Services
         void Logout();
         bool IsAuthenticated();
         User? GetCurrentUser();
+        int GetCurrentUserId();
         bool IsAdmin();
         public string GetUsername();
         bool Exists(string email);

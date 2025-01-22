@@ -1,6 +1,7 @@
 ﻿using FribergCarRental.data;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace FribergCarRental.Services
 {
@@ -52,7 +53,51 @@ namespace FribergCarRental.Services
 
             var added = _bookingRepository.Add(booking);
 
+            added.Car = _carRepository.Get(added.CarId);
+            added.User = _userRepository.Get(added.UserId);
+
             return added;
+        }
+
+        public IEnumerable<BookingIndexViewModel> GetBookingsForUser(int? userId)
+        {
+            if (userId == null)
+            {
+                return Enumerable.Empty<BookingIndexViewModel>();
+            }
+
+            var currentDate = DateOnly.FromDateTime(DateTime.Now);
+
+            var bookings = _bookingRepository
+                .Where(b => b.UserId == userId)
+                .Select(b => new BookingIndexViewModel
+                {
+                    Id = b.Id,
+                    CarModel = b.Car.Model,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    TotalCost = b.TotalCost,
+                    IsUpcoming = b.StartDate > currentDate
+                })
+                .OrderBy( b => b.StartDate)
+                .ToList();
+
+            return bookings;
+        }
+
+        public Booking GetById(int bookingId)
+        {
+            var booking = _bookingRepository.Query()
+                .Include(b => b.Car)
+                .Include(b => b.User)
+                .Where(b => b.Id == bookingId)
+                .First();
+            return booking;
+        }
+
+        public void RemoveBooking(Booking booking)
+        {
+            _bookingRepository.Remove(booking);
         }
     }
 }

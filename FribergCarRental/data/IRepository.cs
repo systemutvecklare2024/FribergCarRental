@@ -1,4 +1,4 @@
-﻿using FribergCarRental.Models;
+﻿using FribergCarRental.Models.Entities;
 using System.Linq.Expressions;
 
 namespace FribergCarRental.data
@@ -22,5 +22,8 @@ namespace FribergCarRental.data
 
         bool Any(Func<T, bool> value);
         void Remove(T entity);
+
+        IQueryable<T> Include(Expression<Func<T, object>> includeExpression);
+        IQueryable<T> Query();
     }
 }

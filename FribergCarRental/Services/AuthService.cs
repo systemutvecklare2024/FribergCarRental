@@ -120,5 +120,15 @@ namespace FribergCarRental.Services
 
             return true;
         }
+
+        public int GetCurrentUserId()
+        {
+            var user = GetCurrentUser();
+            if (user == null)
+            {
+                throw new KeyNotFoundException("Oväntat fel, logga in igen.");
+            }
+            return user.Id;
+        }
     }
 }

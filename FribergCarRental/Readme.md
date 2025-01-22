@@ -11,9 +11,9 @@ Följande user stories har tagits fram och tydliggör vad kunder ska kunna göra
 och vad administratören ska kunna göra.
 
 ### Som kund vill jag kunna
-- lista alla bilar som finns att hyra
-- se en eller flera bilder för bilen jag funderar på att hyra
-- skapa en bokning för en viss bil med ett startdatum och ett slutdatum
+- [x] lista alla bilar som finns att hyra
+- [x] se en eller flera bilder för bilen jag funderar på att hyra
+- [x] skapa en bokning för en viss bil med ett startdatum och ett slutdatum
 - få en bekräftelse på bokningen
 - se mina tidigare bokningar
 - ta bort en kommande bokning.
