@@ -1,29 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using FribergCarRental.Models.Entities;
 using FribergCarRental.data;
 using FribergCarRental.Filters;
-using FribergCarRental.Models.Entities;
 
 namespace FribergCarRental.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [SimpleAuthorize( Role = "Admin")]
-    public class CarsController : Controller
+    [SimpleAuthorize(Role = "Admin")]
+    public class UsersController : Controller
     {
-        private readonly ICarRepository _carRepository;
+        private readonly IUserRepository _userRepository;
 
-        public CarsController(ICarRepository carRepository)
+        public UsersController(IUserRepository userRepository)
         {
-            _carRepository = carRepository;
+            _userRepository = userRepository;
         }
 
-        // GET: Admin/Cars
+        // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
-            return View(await _carRepository.AllAsync());
+            return View(await _userRepository.AllAsync());
         }
 
-        // GET: Admin/Cars/Details/5
+        // GET: Admin/Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,36 +32,36 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var car = await _carRepository
+            var user = await _userRepository
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            return View(user);
         }
 
-        // GET: Admin/Cars/Create
+        // GET: Admin/Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Cars/Create
+        // POST: Admin/Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Model,ImageUrl,Cost")] Car car)
+        public async Task<IActionResult> Create([Bind("Id,Username,Email,Password,Role")] User user)
         {
             if (ModelState.IsValid)
             {
-                await _carRepository.AddAsync(car);
+                await _userRepository.AddAsync(user);
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+            return View(user);
         }
 
-        // GET: Admin/Cars/Edit/5
+        // GET: Admin/Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -68,20 +69,20 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var car = await _carRepository.GetAsync(id.Value);
-            if (car == null)
+            var user = await _userRepository.GetAsync(id.Value);
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(car);
+            return View(user);
         }
 
-        // POST: Admin/Cars/Edit/5
+        // POST: Admin/Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Model,ImageUrl,PricePerDay")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Email,Password,Role")] User user)
         {
-            if (id != car.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -90,11 +91,11 @@ namespace FribergCarRental.Areas.Admin.Controllers
             {
                 try
                 {
-                    await _carRepository.UpdateAsync(car);
+                    await _userRepository.UpdateAsync(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await CarExists(car.Id))
+                    if (!await UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -105,10 +106,10 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+            return View(user);
         }
 
-        // GET: Admin/Cars/Delete/5
+        // GET: Admin/Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -116,33 +117,33 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var car = await _carRepository
+            var user = await _userRepository
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            return View(user);
         }
 
-        // POST: Admin/Cars/Delete/5
+        // POST: Admin/Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var car = await _carRepository.GetAsync(id);
-            if (car != null)
+            var user = await _userRepository.GetAsync(id);
+            if (user != null)
             {
-                await _carRepository.RemoveAsync(car);
+                await _userRepository.AddAsync(user);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> CarExists(int id)
+        private async Task<bool> UserExists(int id)
         {
-            return await _carRepository.AnyAsync(e => e.Id == id);
+            return await _userRepository.AnyAsync(e => e.Id == id);
         }
     }
 }
