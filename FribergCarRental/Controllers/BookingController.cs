@@ -99,6 +99,7 @@ namespace FribergCarRental.Controllers
             return View(createBookingViewModel);
         }
 
+        // POST: Booking/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -114,6 +115,7 @@ namespace FribergCarRental.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Booking/Confirmation
         [SimpleAuthorize]
         public async Task<IActionResult> Confirmation(int bookingId)
         {
@@ -125,7 +127,7 @@ namespace FribergCarRental.Controllers
 
             if (booking.UserId != await _authService.GetCurrentUserId())
             {
-                return RedirectToAction("Index ");
+                return RedirectToAction("Index");
             }
 
             return View(booking);

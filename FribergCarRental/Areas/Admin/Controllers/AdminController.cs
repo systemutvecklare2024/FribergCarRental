@@ -7,6 +7,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminController : Controller
     {
+        //GET: Admin
         public IActionResult Index()
         {
             return View();

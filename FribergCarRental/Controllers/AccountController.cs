@@ -14,6 +14,7 @@ namespace FribergCarRental.Controllers
             _authService = authService;
         }
 
+        // GET: Account/LoginOrRegister
         public IActionResult LoginOrRegister(string returnUrl)
         {
             var accountViewModel = new AccountViewModel

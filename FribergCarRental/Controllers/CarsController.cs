@@ -12,14 +12,14 @@ namespace FribergCarRental.Controllers
             _carRepository = carRepository;
         }
 
-        // GET: CarController
+        // GET: Car
         public async Task<IActionResult> Index()
         {
             var cars = await _carRepository.AllAsync();
             return View(cars);
         }
 
-        // GET: CarController/Details/5
+        // GET: Car/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var car = await _carRepository.GetAsync(id);

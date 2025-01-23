@@ -55,8 +55,6 @@ namespace FribergCarRental.Areas.Admin.Controllers
         }
 
         // POST: Admin/Bookings/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CarId,UserId,StartDate,EndDate,TotalCost")] Booking booking)
@@ -107,8 +105,6 @@ namespace FribergCarRental.Areas.Admin.Controllers
         }
 
         // POST: Admin/Bookings/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,UserId,StartDate,EndDate,TotalCost")] Booking booking)
