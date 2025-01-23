@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 
 namespace FribergCarRental.data
 {
-    public abstract class GenericRepository<T, TContext> : IRepository<T> 
-        where T : class
+    public abstract class GenericRepository<T, TContext> : IRepository<T>
+        where T : class, IEntity
         where TContext : DbContext
     {
         protected TContext dbContext;
@@ -15,85 +15,44 @@ namespace FribergCarRental.data
             dbContext = context;
         }
 
-        public virtual T Add(T entity)
-        {
-            var addedEntity = dbContext.Set<T>().Add(entity).Entity;
-            dbContext.SaveChanges();
-
-            return addedEntity;
-        }
-
-        public virtual IEnumerable<T> All()
-        {
-            var all = dbContext.Set<T>().ToList();
-            return all;
-        }
-
-        public virtual void Delete(int id)
-        {
-            var deleteEntity = Get(id);
-            dbContext.Set<T>().Remove(deleteEntity);
-            dbContext.SaveChanges();
-        }
-
-        public virtual IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
-        {
-            return dbContext.Set<T>().AsQueryable().Where(predicate);
-        }
-
-        public virtual Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        public virtual Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return dbContext.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
-        public virtual T Get(int id)
+        public async Task<T?> GetAsync(int id)
         {
-            return dbContext.Set<T>().Find(id);
+            return await dbContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public virtual void SaveChanges()
+        public async Task<T?> AddAsync(T entity)
         {
-            dbContext.SaveChanges();
+            var added =  dbContext.Set<T>().Add(entity);
+            await dbContext.SaveChangesAsync();
+
+            return added.Entity;
         }
 
-        public virtual Task<List<T>> ToListAsync()
+        public async Task<IEnumerable<T>?> AllAsync()
         {
-            return dbContext.Set<T>().ToListAsync();
+            return await dbContext.Set<T>().ToListAsync();
         }
 
-        public virtual T Update(T entity)
+        public async Task RemoveAsync(T entity)
         {
-            return dbContext.Set<T>().Update(entity).Entity;
-        }
-
-        public async Task SaveChangesAsync()
-        {
+            dbContext.Set<T>().Remove(entity);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<T> FindAsync(int? id)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
-            return await dbContext.Set<T>().FindAsync(id);
+            return await dbContext.Set<T>().AnyAsync(predicate);
         }
 
-        public bool Any(Func<T, bool> value)
+        public async Task UpdateAsync(T entity)
         {
-            return dbContext.Set<T>().Any(value);
-        }
-
-        public void Remove(T entity)
-        {
-            dbContext.Set<T>().Remove(entity);
-            dbContext.SaveChanges();
-        }
-        public IQueryable<T> Include(Expression<Func<T, object>> includeExpression)
-        {
-            return dbContext.Set<T>().Include(includeExpression);
-        }
-
-        public IQueryable<T> Query()
-        {
-            return dbContext.Set<T>();
+            dbContext.Set<T>().Update(entity);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

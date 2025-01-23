@@ -3,11 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FribergCarRental.Models.Entities
 {
-    public class Car
+    public class Car : IEntity
     {
+        // Properties
         public int Id { get; set; }
-
-        public ICollection<Booking> Bookings { get; set; }
 
         [Required(ErrorMessage = "Model is required")]
         public string Model { get; set; }
@@ -19,5 +18,8 @@ namespace FribergCarRental.Models.Entities
         [Precision(10, 2)]
         [DataType(DataType.Currency)]
         public decimal PricePerDay { get; set; }
+
+        // Navigation
+        public ICollection<Booking>? Bookings { get; set; }
     }
 }

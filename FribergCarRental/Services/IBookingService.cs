@@ -5,12 +5,13 @@ namespace FribergCarRental.Services
 {
     public interface IBookingService
     {
-        bool CarExist(int id);
-        Contact GetContactFromUsername(string username);
-        User GetUserFromUsernameWithContact(string username);
-        Booking CreateBooking(Car car, User user, DateTime startDate, DateTime endDate);
-        IEnumerable<BookingIndexViewModel> GetBookingsForUser(int? userId);
-        Booking GetById(int bookingId);
-        void RemoveBooking(Booking booking);
+        Task<IEnumerable<BookingIndexViewModel>> GetBookingsForUser(int? userId);
+        Task<IEnumerable<Booking>> GetAllBookingsWithDetailsAsync();
+
+        Task<Booking?> GetBookingByIdWithDetailAsync(int id);
+        Task<Booking?> CreateBookingAsync(Car car, User user, DateTime dateTime1, DateTime dateTime2);
+        Task<Booking?> GetByIdAsync(int id);
+        Task UpdateBookingAsync(Booking updatedBooking);
+        Task RemoveBookingAsync(Booking booking);
     }
 }

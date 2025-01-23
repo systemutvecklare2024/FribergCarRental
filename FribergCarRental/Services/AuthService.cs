@@ -1,5 +1,4 @@
 ﻿using FribergCarRental.data;
-using FribergCarRental.data.UnitOfWork;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
 
@@ -9,17 +8,15 @@ namespace FribergCarRental.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpAccessor;
-        private readonly IUserContactUnitOfWork _UserContactUnitOfWork;
-        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContext, IUserContactUnitOfWork unitOfWork)
+        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContext)
         {
             _userRepository = userRepository;
             _httpAccessor = httpContext;
-            _UserContactUnitOfWork = unitOfWork;
         }
 
-        public bool Login(string username, string password)
+        public async Task<bool> Login(string username, string password)
         {
-            var user = _userRepository.Find(u => (u.Username == username || u.Email == username) && u.Password == password).FirstOrDefault();
+            var user = await _userRepository.FirstOrDefaultAsync(u => (u.Username == username || u.Email == username) && u.Password == password);
 
             if (user != null)
             {
@@ -51,16 +48,10 @@ namespace FribergCarRental.Services
 
             try
             {
-                _UserContactUnitOfWork.BeginTransaction();
-
-                _UserContactUnitOfWork.UserRepository.Add(user);
-                await _UserContactUnitOfWork.SaveChangesAsync();
-
-                _UserContactUnitOfWork.Commit();
+                var newUser = await _userRepository.AddAsync(user);
             }
             catch (Exception)
             {
-                _UserContactUnitOfWork.Rollback();
                 throw;
             }
 
@@ -69,9 +60,9 @@ namespace FribergCarRental.Services
             _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
         }
 
-        public bool Exists(string email)
+        public async Task<bool> Exists(string email)
         {
-            return _userRepository.Any(u =>  u.Email == email);
+            return await _userRepository.AnyAsync(u =>  u.Email == email);
         }
 
         public void Logout()
@@ -91,7 +82,7 @@ namespace FribergCarRental.Services
             return true;
         }
 
-        public User? GetCurrentUser()
+        public async Task<User?> GetCurrentUser()
         {
             var username = _httpAccessor?.HttpContext?.Session.GetString("User");
             if (username == null)
@@ -99,7 +90,7 @@ namespace FribergCarRental.Services
                 return null;
             }
 
-            return _userRepository.FindByUsername(username);
+            return await _userRepository.FindByUsername(username);
         }
 
         public string GetUsername()
@@ -109,9 +100,9 @@ namespace FribergCarRental.Services
             return Utils.StringHelper.Capitalize(username);
         }
 
-        public bool IsAdmin()
+        public async Task<bool> IsAdmin()
         {
-            var user = GetCurrentUser();
+            var user = await GetCurrentUser();
 
             if (user == null || !user.Role.Equals("Admin"))
             {
@@ -121,9 +112,9 @@ namespace FribergCarRental.Services
             return true;
         }
 
-        public int GetCurrentUserId()
+        public async Task<int> GetCurrentUserId()
         {
-            var user = GetCurrentUser();
+            var user = await GetCurrentUser();
             if (user == null)
             {
                 throw new KeyNotFoundException("Oväntat fel, logga in igen.");

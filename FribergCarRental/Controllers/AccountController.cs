@@ -44,11 +44,11 @@ namespace FribergCarRental.Controllers
         // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
-                if (_authService.Login(loginViewModel.Email, loginViewModel.Password))
+                if (await _authService.Login(loginViewModel.Email, loginViewModel.Password))
                 {
                     if(string.IsNullOrEmpty(loginViewModel.ReturnUrl))
                     {
@@ -97,10 +97,10 @@ namespace FribergCarRental.Controllers
         // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterViewModel registerViewModel)
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
 
-            if(_authService.Exists(registerViewModel.Email))
+            if(await _authService.Exists(registerViewModel.Email))
             {
                 ModelState.AddModelError("", "An account with this email or username already exists.");
             }
@@ -112,7 +112,7 @@ namespace FribergCarRental.Controllers
 
             try
             {
-                _authService.Register(registerViewModel);
+                await _authService.Register(registerViewModel);
             }
 
             catch (Exception)

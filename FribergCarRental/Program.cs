@@ -1,6 +1,5 @@
 using FribergCarRental.data;
 using FribergCarRental.data.Seeding;
-using FribergCarRental.data.UnitOfWork;
 using FribergCarRental.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +23,6 @@ namespace FribergCarRental
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IContactRepository, ContactRepository>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-            builder.Services.AddScoped<IUserContactUnitOfWork, UserContactUnitOfWork>();
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IBookingService, BookingService>();

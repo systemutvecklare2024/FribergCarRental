@@ -23,7 +23,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">Mina bokningar</a>
                     </li>
                 }
-                @if (AuthService.IsAdmin())
+                @if (await AuthService.IsAdmin())
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,10 +35,13 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Cars" asp-action="Index">Cars</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Cars" asp-action="Index">Bilar</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Booking" asp-action="Index">Booking</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Användare</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Bookings" asp-action="Index">Bokningar</a>
                             </li>
                         </ul>
                     </li>

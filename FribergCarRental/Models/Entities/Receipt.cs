@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FribergCarRental.Models.Entities
 {
-    public class Receipt
+    public class Receipt : IEntity
     {
         public int Id { get; set; }
 

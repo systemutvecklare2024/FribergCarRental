@@ -5,14 +5,11 @@ using System.ComponentModel.DataAnnotations;
 namespace FribergCarRental.Models.Entities
 {
     [Index(nameof(Username), nameof(Email), IsUnique = true)]
-    public class User
+    public class User : IEntity
     {
+        // Properties
         public int Id { get; set; }
         
-        public virtual Contact Contact { get; set; }
-
-        public ICollection<Booking> Bookings { get; set; }
-
         [Required(ErrorMessage = "Användarnamn är obligatoriskt")]
         [Display(Name = "Användarnamn")]
         public string Username { get; set; }
@@ -27,5 +24,9 @@ namespace FribergCarRental.Models.Entities
 
         [Display(Name = "Roll")]
         public string Role { get; set; } = "Customer";
+
+        // Navigation
+        public virtual Contact? Contact { get; set; }
+        public ICollection<Booking>? Bookings { get; set; }
     }
 }

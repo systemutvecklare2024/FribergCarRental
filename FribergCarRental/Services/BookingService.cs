@@ -1,7 +1,6 @@
 ﻿using FribergCarRental.data;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
-using Microsoft.EntityFrameworkCore;
 
 namespace FribergCarRental.Services
 {
@@ -17,24 +16,54 @@ namespace FribergCarRental.Services
             _userRepository = userRepository;
             _bookingRepository = bookingRepository;
         }
-
-        public bool CarExist(int id)
+        public async Task<IEnumerable<BookingIndexViewModel>> GetBookingsForUser(int? userId)
         {
-            return _carRepository.Any(x => x.Id == id);
+            if (userId == null)
+            {
+                return [];
+            }
+
+            var currentDate = DateOnly.FromDateTime(DateTime.Now);
+
+            var bookings = await _bookingRepository.GetBookingsForUserAsync(userId.Value);
+
+            var bookingViewModels = bookings.Select(b => new BookingIndexViewModel
+            {
+                Id = b.Id,
+                CarModel = b?.Car?.Model ?? "Unknown",
+                StartDate = b.StartDate,
+                EndDate = b.EndDate,
+                TotalCost = b.TotalCost,
+                IsUpcoming = b.StartDate > currentDate
+            })
+            .OrderBy(b => b.StartDate)
+            .ToList();
+
+            return bookingViewModels;
         }
 
-        public Contact GetContactFromUsername(string username)
+        public async Task RemoveBooking(Booking booking)
         {
-            var user = _userRepository.FindByUsernameWithContact(username);
-            return user.Contact;
+            await _bookingRepository.RemoveAsync(booking);
         }
 
-        public User GetUserFromUsernameWithContact(string username)
+        public async Task<IEnumerable<Booking>> GetAllBookingsWithDetailsAsync()
         {
-            return _userRepository.FindByUsernameWithContact(username);
+            return await _bookingRepository.GetAllWithDetailsAsync();
         }
 
-        public Booking CreateBooking(Car car, User user, DateTime start, DateTime end)
+        public async Task<Booking?> GetBookingByIdWithDetailAsync(int id)
+        {
+            return await _bookingRepository.GetByIdWithDetailAsync(id);
+        }
+
+        public async Task UpdateBookingAsync(Booking updatedBooking)
+        {
+            await _bookingRepository.UpdateAsync(updatedBooking);
+
+            return;
+        }
+        public async Task<Booking?> CreateBookingAsync(Car car, User user, DateTime start, DateTime end)
         {
             var startDate = DateOnly.FromDateTime(start);
             var endDate = DateOnly.FromDateTime(end);
@@ -51,53 +80,23 @@ namespace FribergCarRental.Services
                 TotalCost = totalCost
             };
 
-            var added = _bookingRepository.Add(booking);
-
-            added.Car = _carRepository.Get(added.CarId);
-            added.User = _userRepository.Get(added.UserId);
+            var added = await _bookingRepository.AddAsync(booking);
+            if (added != null)
+            {
+                added.Car = await _carRepository.GetAsync(added.CarId);
+                added.User = await _userRepository.GetAsync(added.UserId);
+            }
 
             return added;
         }
-
-        public IEnumerable<BookingIndexViewModel> GetBookingsForUser(int? userId)
+        public async Task<Booking?> GetByIdAsync(int id)
         {
-            if (userId == null)
-            {
-                return Enumerable.Empty<BookingIndexViewModel>();
-            }
-
-            var currentDate = DateOnly.FromDateTime(DateTime.Now);
-
-            var bookings = _bookingRepository
-                .Where(b => b.UserId == userId)
-                .Select(b => new BookingIndexViewModel
-                {
-                    Id = b.Id,
-                    CarModel = b.Car.Model,
-                    StartDate = b.StartDate,
-                    EndDate = b.EndDate,
-                    TotalCost = b.TotalCost,
-                    IsUpcoming = b.StartDate > currentDate
-                })
-                .OrderBy( b => b.StartDate)
-                .ToList();
-
-            return bookings;
+            return await _bookingRepository.GetAsync(id);
         }
 
-        public Booking GetById(int bookingId)
+        public async Task RemoveBookingAsync(Booking booking)
         {
-            var booking = _bookingRepository.Query()
-                .Include(b => b.Car)
-                .Include(b => b.User)
-                .Where(b => b.Id == bookingId)
-                .First();
-            return booking;
-        }
-
-        public void RemoveBooking(Booking booking)
-        {
-            _bookingRepository.Remove(booking);
+            await _bookingRepository.RemoveAsync(booking);
         }
     }
 }

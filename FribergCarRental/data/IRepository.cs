@@ -5,25 +5,12 @@ namespace FribergCarRental.data
 {
     public interface IRepository<T>
     {
-        T Add(T entity);
-        T Update(T entity);
-        T Get(int id);
-        void Delete(int id);
-        IEnumerable<T> All();
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
-        void SaveChanges();
-
-        Task SaveChangesAsync();
-
-        Task<List<T>> ToListAsync();
-        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
-
-        Task<T> FindAsync(int? id);
-
-        bool Any(Func<T, bool> value);
-        void Remove(T entity);
-
-        IQueryable<T> Include(Expression<Func<T, object>> includeExpression);
-        IQueryable<T> Query();
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        Task<T?> GetAsync(int id);
+        Task<T?> AddAsync(T entity);
+        Task<IEnumerable<T>?> AllAsync();
+        Task RemoveAsync(T entity);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+        Task UpdateAsync(T entity);
     }
 }

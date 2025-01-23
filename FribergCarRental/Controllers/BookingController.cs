@@ -20,23 +20,23 @@ namespace FribergCarRental.Controllers
         }
 
         // GET: Booking/Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var userId = _authService.GetCurrentUser()?.Id;
-            var bookings = _bookingService.GetBookingsForUser(userId);
+            var userId = await _authService.GetCurrentUserId();
+            var bookings = await _bookingService.GetBookingsForUser(userId);
 
             return View(bookings);
         }
 
         // GET: Booking/Create
-        public IActionResult Create(int carId)
+        public async Task<IActionResult> Create(int carId)
         {
             if (!_authService.IsAuthenticated())
             {
                 return RedirectToAction("LoginOrRegister", "Account", new { returnUrl = Url.Action("Create", "Booking", new { carId }) });
             }
 
-            var car = _carRepository.Get(carId);
+            var car = await _carRepository.GetAsync(carId);
             if (car == null)
             {
                 return NotFound("Bil hittades ej");
@@ -62,9 +62,9 @@ namespace FribergCarRental.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SimpleAuthorize]
-        public IActionResult Create(CreateBookingViewModel createBookingViewModel)
+        public async Task<IActionResult> Create(CreateBookingViewModel createBookingViewModel)
         {
-            var user = _authService.GetCurrentUser();
+            var user = await _authService.GetCurrentUser();
             if (user == null)
             {
                 return RedirectToAction(
@@ -75,18 +75,23 @@ namespace FribergCarRental.Controllers
 
             if (ModelState.IsValid)
             {
-                var car = _carRepository.Get(createBookingViewModel.CarId);
+                var car = await _carRepository.GetAsync(createBookingViewModel.CarId);
                 if (car == null)
                 {
                     // Car not found, wtf do we do now?
                     return RedirectToAction("Index");
                 }
 
-                var booking = _bookingService.CreateBooking(
+                var booking = await _bookingService.CreateBookingAsync(
                     car,
                     user,
                     createBookingViewModel.StartDate,
                     createBookingViewModel.EndDate);
+
+                if (booking == null)
+                {
+                    return NotFound();
+                }
 
                 return RedirectToAction("Confirmation", new { bookingId = booking.Id });
             }
@@ -96,27 +101,33 @@ namespace FribergCarRental.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var booking = _bookingService.GetById(id);
+            var booking = await _bookingService.GetByIdAsync(id);
             if(booking == null)
             {
                 return NotFound("Kan ej hitta angiven bokning");
             }
 
-            _bookingService.RemoveBooking(booking);
+            await _bookingService.RemoveBookingAsync(booking);
 
             return RedirectToAction("Index");
         }
 
         [SimpleAuthorize]
-        public IActionResult Confirmation(int bookingId)
+        public async Task<IActionResult> Confirmation(int bookingId)
         {
-            var booking = _bookingService.GetById(bookingId);
-            if (booking.UserId != _authService.GetCurrentUserId())
+            var booking = await _bookingService.GetBookingByIdWithDetailAsync(bookingId);
+            if(booking == null)
+            {
+                return NotFound();
+            }
+
+            if (booking.UserId != await _authService.GetCurrentUserId())
             {
                 return RedirectToAction("Index ");
             }
+
             return View(booking);
         }
     }

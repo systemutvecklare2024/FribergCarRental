@@ -10,13 +10,42 @@ namespace FribergCarRental.data
         {
         }
 
-        public IEnumerable<Booking> Where(Expression<Func<Booking, bool>> predicate)
+        public async Task<IEnumerable<Booking>> GetAllWithDetailsAsync(Expression<Func<Booking, bool>> predicate)
         {
-            return dbContext.Bookings
+            return await dbContext
+                .Set<Booking>()
                 .Include(b => b.Car)
                 .Include(b => b.User)
                 .Where(predicate)
-                .ToList();
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Booking>> GetAllWithDetailsAsync()
+        {
+            return await dbContext
+                .Set<Booking>()
+                .Include(b => b.Car)
+                .Include(b => b.User)
+                .Where(b => true)
+                .ToListAsync();
+        }
+
+        public async Task<Booking?> GetByIdWithDetailAsync(int id)
+        {
+            return await dbContext
+                .Set<Booking>()
+                .Include(b => b.Car)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsForUserAsync(int userId)
+        {
+            return await dbContext.Set<Booking>()
+                .Include(b => b.Car)
+                .Include(b => b.User)
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
         }
     }
 }

@@ -1,18 +1,15 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FribergCarRental.Models.Entities
 {
-    public class Contact
+    public class Contact : IEntity
     {
-        public int Id { get; set; }
-
         // Relations
-        [JsonIgnore]
-        public virtual User User { get; set; }
         public int UserId { get; set; }
 
         // Properties
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Firstname is required")]
         public string FirstName { get; set; }
 
@@ -31,5 +28,8 @@ namespace FribergCarRental.Models.Entities
 
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
+
+        // Navigation
+        public virtual User? User { get; set; }
     }
 }

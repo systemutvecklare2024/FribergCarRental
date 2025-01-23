@@ -1,26 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FribergCarRental.Models.Entities
 {
-    public class Booking : IValidatableObject
+    public class Booking : IValidatableObject, IEntity
     {
-        public int Id { get; set; }
-
+        // Relations
         [Required(ErrorMessage = "Bil obligatorisk")]
-
-        
-        [Display(Name = "Bil")]
-        public virtual Car Car { get; set; }
-        [Required]
         public int CarId {  get; set; }
 
-        [Required]
+        // Properties
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Användare är obligatorisk")]
         public int UserId { get; set; }
-
-        public virtual User User { get; set; }
-
 
         [Required(ErrorMessage = "Startdatum är obligatoriskt")]
         [Display(Name = "Startdatum")]
@@ -35,6 +27,13 @@ namespace FribergCarRental.Models.Entities
         [Precision(10, 2)]
         [DataType(DataType.Currency)]
         public decimal TotalCost { get; set; }
+
+        // Navigation
+        [Display(Name = "Bil")]
+        public virtual Car? Car { get; set; }
+
+        [Display(Name = "Användare")]
+        public virtual User? User { get; set; }
 
         /// <summary>
         /// Automate validation of dates and totalcost

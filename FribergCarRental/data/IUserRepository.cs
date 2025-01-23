@@ -4,7 +4,6 @@ namespace FribergCarRental.data
 {
     public interface IUserRepository : IRepository<User>
     {
-        User FindByUsername(string username);
-        User FindByUsernameWithContact(string username);
+        Task<User?> FindByUsername(string username);
     }
 }

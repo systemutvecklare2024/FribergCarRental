@@ -9,15 +9,9 @@ namespace FribergCarRental.data
         {
         }
 
-        public User FindByUsername(string username)
+        public async Task<User?> FindByUsername(string username)
         {
-            return Find(x => x.Username == username).FirstOrDefault();
-        }
-
-        public User FindByUsernameWithContact(string username)
-        {
-            return dbContext.Set<User>().Where(x => x.Username == username).Include(x => x.Contact).FirstOrDefault();
-
+            return await dbContext.Set<User>().FirstOrDefaultAsync(x => x.Username == username);
         }
     }
 }

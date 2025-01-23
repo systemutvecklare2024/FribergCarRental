@@ -6,13 +6,13 @@ namespace FribergCarRental.Services
     public interface IAuthService
     {
         Task Register(RegisterViewModel registerViewModel);
-        bool Login(string username, string password);
+        Task<bool> Login(string username, string password);
         void Logout();
         bool IsAuthenticated();
-        User? GetCurrentUser();
-        int GetCurrentUserId();
-        bool IsAdmin();
+        Task<User?> GetCurrentUser();
+        Task<int> GetCurrentUserId();
+        Task<bool> IsAdmin();
         public string GetUsername();
-        bool Exists(string email);
+        Task<bool> Exists(string account);
     }
 }
