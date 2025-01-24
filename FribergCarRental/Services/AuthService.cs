@@ -152,7 +152,7 @@ namespace FribergCarRental.Services
         {
             var username = _httpAccessor?.HttpContext?.Session.GetString("User");
 
-            return Utils.StringHelper.Capitalize(username);
+            return username;
         }
 
         /// <summary>
