@@ -120,6 +120,13 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var today = DateOnly.FromDateTime(DateTime.Now);
+
+            if(booking.StartDate < today)
+            {
+                return RedirectToAction("Index");
+            }
+
             var modelCars = await _carRepository.AllAsync();
             var cars = modelCars?.Select(c => new
             {
@@ -144,7 +151,6 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
                 CarPrices = cars.ToDictionary(c => c.Id, c => c.PricePerDay)
             };
-
 
             return View(viewModel);
         }
