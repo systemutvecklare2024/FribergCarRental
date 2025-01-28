@@ -1,12 +1,11 @@
-﻿using FribergCarRental.Models.Entities;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace FribergCarRental.Areas.Admin.Models
 {
-    public class AdminCreateBookingViewModel
+    public class AdminBookingViewModel
     {
+        public int? Id { get; set; }
         public int CarId { get; set; }
         public int UserId { get; set; }
 
@@ -21,6 +20,5 @@ namespace FribergCarRental.Areas.Admin.Models
         public List<SelectListItem>? Cars { get; set; }
         public Dictionary<int, decimal>? CarPrices { get; set; }
         public List<SelectListItem>? Users { get; set; }
-
     }
 }

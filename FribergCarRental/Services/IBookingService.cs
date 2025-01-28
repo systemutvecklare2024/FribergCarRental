@@ -1,4 +1,5 @@
-﻿using FribergCarRental.Models.Entities;
+﻿using FribergCarRental.Areas.Admin.Models;
+using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
 
 namespace FribergCarRental.Services
@@ -12,6 +13,7 @@ namespace FribergCarRental.Services
         Task<Booking?> CreateBookingAsync(Car car, User user, DateTime dateTime1, DateTime dateTime2);
         Task<Booking?> GetByIdAsync(int id);
         Task UpdateBookingAsync(Booking updatedBooking);
+        Task UpdateBookingAsync(AdminBookingViewModel updatedBooking);
         Task RemoveBookingAsync(Booking booking);
     }
 }

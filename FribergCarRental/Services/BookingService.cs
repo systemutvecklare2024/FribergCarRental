@@ -1,6 +1,8 @@
-﻿using FribergCarRental.data;
+﻿using FribergCarRental.Areas.Admin.Models;
+using FribergCarRental.data;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace FribergCarRental.Services
 {
@@ -100,6 +102,32 @@ namespace FribergCarRental.Services
             await _bookingRepository.UpdateAsync(updatedBooking);
         }
 
+        public async Task UpdateBookingAsync(AdminBookingViewModel booking)
+        {
+            try
+            {
+                var existing = await _bookingRepository.GetAsync(booking.Id.Value) ?? throw new KeyNotFoundException($"Det finns ingen bokning med ID {booking.Id.Value}");
+                var car = await _carRepository.GetAsync(booking.CarId) ?? throw new KeyNotFoundException($"Det finns ingen bil med ID {booking.CarId}");
+
+                // Update fields
+                existing.StartDate = booking.StartDate;
+                existing.EndDate = booking.EndDate;
+                existing.CarId = booking.CarId;
+                existing.UserId = booking.UserId;
+                existing.TotalCost = CalculateCost(
+                    car.PricePerDay, 
+                    booking.StartDate.ToDateTime(TimeOnly.MinValue), 
+                    booking.EndDate.ToDateTime(TimeOnly.MinValue));
+
+                await _bookingRepository.UpdateAsync(existing);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// Creates a new booking for a user and a car, calculating the total cost based on the rental duration.
         /// </summary>
@@ -123,8 +151,7 @@ namespace FribergCarRental.Services
             var startDate = DateOnly.FromDateTime(start);
             var endDate = DateOnly.FromDateTime(end);
 
-            var timeSpan = (end - start).Days;
-            var totalCost = car.PricePerDay * timeSpan;
+            decimal totalCost = CalculateCost(car.PricePerDay, start, end);
 
             var booking = new Booking
             {
@@ -143,6 +170,13 @@ namespace FribergCarRental.Services
             }
 
             return added;
+        }
+
+        private static decimal CalculateCost(decimal pricePerDay, DateTime start, DateTime end)
+        {
+            
+            var timeSpan = (end - start).Days;
+            return pricePerDay * timeSpan;
         }
 
         /// <summary>

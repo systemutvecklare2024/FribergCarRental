@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FribergCarRental.Models.Entities;
 using FribergCarRental.data;
 using FribergCarRental.Services;
 using FribergCarRental.Filters;
@@ -67,13 +66,13 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 u.Email
             });
 
-            var viewModel = new AdminCreateBookingViewModel
+            var viewModel = new AdminBookingViewModel
             {
                 StartDate = DateOnly.FromDateTime(DateTime.Now),
                 EndDate = DateOnly.FromDateTime((DateTime.Now).AddDays(1)),
                 Cars = cars.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
-                Users = users.Select( u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email}).ToList(),
-                CarPrices = cars.ToDictionary( c => c.Id, c => c.PricePerDay)
+                Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
+                CarPrices = cars.ToDictionary(c => c.Id, c => c.PricePerDay)
             };
 
             return View(viewModel);
@@ -82,7 +81,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // POST: Admin/Bookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarId,UserId,StartDate,EndDate")] AdminCreateBookingViewModel booking)
+        public async Task<IActionResult> Create([Bind("CarId,UserId,StartDate,EndDate")] AdminBookingViewModel booking)
         {
             if (ModelState.IsValid)
             {
@@ -121,57 +120,59 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            ViewData["CarId"] = new SelectList(await _carRepository.AllAsync(), "Id", "Model", booking.CarId);
-            ViewData["UserId"] = new SelectList(await _userRepository.AllAsync(), "Id", "Email", booking.UserId);
-            
-            return View(booking);
+            var modelCars = await _carRepository.AllAsync();
+            var cars = modelCars?.Select(c => new
+            {
+                c.Id,
+                c.Model,
+                c.PricePerDay
+            });
+
+            var modelUsers = await _userRepository.AllAsync();
+            var users = modelUsers?.Select(u => new
+            {
+                u.Id,
+                u.Email
+            });
+
+            var viewModel = new AdminBookingViewModel
+            {
+                Id = id,
+                StartDate = DateOnly.FromDateTime(DateTime.Now),
+                EndDate = DateOnly.FromDateTime((DateTime.Now).AddDays(1)),
+                Cars = cars.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
+                Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
+                CarPrices = cars.ToDictionary(c => c.Id, c => c.PricePerDay)
+            };
+
+
+            return View(viewModel);
         }
 
         // POST: Admin/Bookings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,UserId,StartDate,EndDate,TotalCost")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,UserId,StartDate,EndDate")] AdminBookingViewModel booking)
         {
-            if (id != booking.Id)
+            if (id != booking.Id || !await BookingExists(booking.Id.Value))
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var updatedBooking = await _bookingService.GetByIdAsync(booking.Id);
-                    if (updatedBooking == null)
-                    {
-                        return NotFound();
-                    }
+                return View(booking);
+            }
 
-                    // Update fields
-                    updatedBooking.CarId = booking.CarId;
-                    updatedBooking.UserId = booking.UserId;
-                    updatedBooking.StartDate = booking.StartDate;
-                    updatedBooking.EndDate = booking.EndDate;
-                    updatedBooking.TotalCost = booking.TotalCost;
-
-                    await _bookingService.UpdateBookingAsync(updatedBooking);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await BookingExists(booking.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+            try
+            {
+                await _bookingService.UpdateBookingAsync(booking);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(await _carRepository.AllAsync(), "Id", "Model", booking.CarId);
-            ViewData["UserId"] = new SelectList(await _userRepository.AllAsync(), "Id", "Email", booking.UserId);
-            return View(booking);
+            catch (DbUpdateConcurrencyException)
+            {
+                return Problem("Concurrency problem");
+            }
         }
 
         // GET: Admin/Bookings/Delete/5
