@@ -1,12 +1,12 @@
 ﻿@model FribergCarRental.Models.Entities.Booking
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Redigera";
 }
 
-<h1>Edit</h1>
+<h1>Redigera</h1>
 
-<h4>Booking</h4>
+<h4>Bokning</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,12 +14,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="CarId" class="control-label"></label>
+                <label asp-for="CarId" class="control-label">Bil</label>
                 <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarId"></select>
                 <span asp-validation-for="CarId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
+                <label asp-for="UserId" class="control-label">Kund</label>
                 <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
@@ -39,13 +39,13 @@
                 <span asp-validation-for="TotalCost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Spara" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tillbaka</a>
 </div>
 

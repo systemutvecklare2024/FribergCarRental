@@ -27,6 +27,7 @@ namespace FribergCarRental.data
                 .Include(b => b.Car)
                 .Include(b => b.User)
                 .Where(b => true)
+                .OrderByDescending(b => b.StartDate)
                 .ToListAsync();
         }
 

@@ -4,10 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.data;
 using FribergCarRental.Services;
+using FribergCarRental.Filters;
+using FribergCarRental.Areas.Admin.Models;
 
 namespace FribergCarRental.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [SimpleAuthorize(Role = "Admin")]
     public class BookingsController : Controller
     {
         private readonly IBookingService _bookingService;
@@ -49,15 +52,37 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // GET: Admin/Bookings/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CarId"] = new SelectList(await _carRepository.AllAsync(), "Id", "ImageUrl");
-            ViewData["UserId"] = new SelectList(await _userRepository.AllAsync(), "Id", "Email");
-            return View();
+            var modelCars = await _carRepository.AllAsync();
+            var cars = modelCars?.Select(c => new
+            {
+                c.Id,
+                c.Model,
+                c.PricePerDay
+            });
+
+            var modelUsers = await _userRepository.AllAsync();
+            var users = modelUsers?.Select(u => new
+            {
+                u.Id,
+                u.Email
+            });
+
+            var viewModel = new AdminCreateBookingViewModel
+            {
+                StartDate = DateOnly.FromDateTime(DateTime.Now),
+                EndDate = DateOnly.FromDateTime((DateTime.Now).AddDays(1)),
+                Cars = cars.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
+                Users = users.Select( u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email}).ToList(),
+                CarPrices = cars.ToDictionary( c => c.Id, c => c.PricePerDay)
+            };
+
+            return View(viewModel);
         }
 
         // POST: Admin/Bookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CarId,UserId,StartDate,EndDate,TotalCost")] Booking booking)
+        public async Task<IActionResult> Create([Bind("CarId,UserId,StartDate,EndDate")] AdminCreateBookingViewModel booking)
         {
             if (ModelState.IsValid)
             {
@@ -79,8 +104,6 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CarId"] = new SelectList(await _carRepository.AllAsync(), "Id", "Model", booking.CarId);
-            ViewData["UserId"] = new SelectList(await _userRepository.AllAsync(), "Id", "Email", booking.UserId);
             return View(booking);
         }
 

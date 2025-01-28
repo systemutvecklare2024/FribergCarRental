@@ -1,19 +1,23 @@
 ﻿@model IEnumerable<FribergCarRental.Models.Entities.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bokningar";
+
+    var today = DateOnly.FromDateTime(DateTime.Now);
 }
 
-<h1>Index</h1>
+<h1>Bokningar</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">
+        <i class="fa-solid fa-plus"></i><span class="icon-margin">Skapa ny bokning</span>
+    </a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Car)
+                @Html.DisplayNameFor(model => model.Car.Model)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User)
@@ -27,33 +31,45 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalCost)
             </th>
-            <th></th>
+            <th>Åtgärd</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Car.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalCost)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCost)
+                </td>
+                <td>
+                    |
+                    <a class="btn btn-sm btn-primary" title="Detaljer" asp-action="Details" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    @if (today <= item.EndDate)
+                    {
+                        <a class="btn btn-sm btn-warning" title="Ändra" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger" title="Ta bort" asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    }
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

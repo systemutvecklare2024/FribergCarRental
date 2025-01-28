@@ -9,6 +9,7 @@ namespace FribergCarRental.Models.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Model is required")]
+        [Display( Name = "Modell")]
         public string Model { get; set; }
 
         [Required(ErrorMessage = "ImageUrl is required")]
