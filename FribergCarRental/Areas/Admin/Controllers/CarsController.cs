@@ -50,7 +50,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // POST: Admin/Cars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Model,ImageUrl,Cost")] Car car)
+        public async Task<IActionResult> Create([Bind("Id,Model,ImageUrl,PricePerDay")] Car car)
         {
             if (ModelState.IsValid)
             {

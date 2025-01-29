@@ -2,13 +2,15 @@
 @model IEnumerable<Car>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bilar";
 }
 
-<h1>Index</h1>
+<h1>Bilar</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">
+        <i class="fa-solid fa-plus"></i><span class="icon-margin">Lägg till</span>
+    </a>
 </p>
 <table class="table">
     <thead>
@@ -26,23 +28,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePerDay)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    <a href="@item.ImageUrl" target="_blank">Visa bild</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PricePerDay)
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-primary" title="Detaljer" asp-action="Details" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    <a class="btn btn-sm btn-warning" title="Ändra" asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a class="btn btn-sm btn-danger" title="Ta bort" asp-action="Delete" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
