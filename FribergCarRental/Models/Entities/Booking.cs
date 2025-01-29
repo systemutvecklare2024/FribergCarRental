@@ -15,11 +15,11 @@ namespace FribergCarRental.Models.Entities
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Startdatum är obligatoriskt")]
-        [Display(Name = "Startdatum")]
+        [Display(Name = "Start datum")]
         public DateOnly StartDate { get; set; }
 
         [Required(ErrorMessage = "Slutdatum är obligatoriskt")]
-        [Display(Name = "Slutdatum")]
+        [Display(Name = "Slut datum")]
         public DateOnly EndDate { get; set; }
 
         [Required(ErrorMessage = "Total kostnad är obligatoriskt")]

@@ -4,6 +4,9 @@ namespace FribergCarRental.Models.ViewModel
 {
     public class CreateBookingViewModel
     {
+        [Display(Name = "Bil")]
+        public string? CarModel { get; set; }
+
         [Required(ErrorMessage = "Startdatum är obligatoriskt")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
@@ -13,5 +16,9 @@ namespace FribergCarRental.Models.ViewModel
         public DateTime EndDate { get; set; }
 
         public int CarId { get; set; }
+
+        public decimal? CarPrice { get; set; }
+
+        public decimal? TotalCost { get; set; }
     }
 }

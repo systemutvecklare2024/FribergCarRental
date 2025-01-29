@@ -10,7 +10,7 @@
 
 <p>
     <a class="btn btn-primary" asp-action="Create">
-        <i class="fa-solid fa-plus"></i><span class="icon-margin">Skapa ny bokning</span>
+        <i class="fa-solid fa-plus"></i><span class="icon-margin">Lägg till</span>
     </a>
 </p>
 <table class="table">
@@ -54,7 +54,6 @@
                     @Html.DisplayFor(modelItem => item.TotalCost)
                 </td>
                 <td>
-                    |
                     <a class="btn btn-sm btn-primary" title="Detaljer" asp-action="Details" asp-route-id="@item.Id">
                         <i class="fa-solid fa-eye"></i>
                     </a>
@@ -67,7 +66,6 @@
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     }
-
                 </td>
             </tr>
         }

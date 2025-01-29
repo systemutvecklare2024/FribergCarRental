@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace FribergCarRental.Areas.Admin.Models
+namespace FribergCarRental.Models.ViewModel
 {
-    public class AdminBookingViewModel
+    public class BookingViewModel
     {
         public int? Id { get; set; }
         public int CarId { get; set; }
@@ -19,6 +19,5 @@ namespace FribergCarRental.Areas.Admin.Models
 
         public List<SelectListItem>? Cars { get; set; }
         public Dictionary<int, decimal>? CarPrices { get; set; }
-        public List<SelectListItem>? Users { get; set; }
     }
 }

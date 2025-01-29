@@ -9,7 +9,7 @@ namespace FribergCarRental.Models.ViewModel
         [Display(Name = "Bil")]
         public string CarModel { get; set; }
 
-        [Display(Name = "Startdatum")]
+        [Display(Name = "Start datum")]
         public DateOnly StartDate { get; set; }
 
         [Display(Name = "Slut datum")]
