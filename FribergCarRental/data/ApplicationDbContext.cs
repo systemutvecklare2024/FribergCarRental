@@ -38,6 +38,15 @@ namespace FribergCarRental.data
                 .WithOne(c => c.User)
                 .HasForeignKey<Contact>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Force uniqueness
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }
