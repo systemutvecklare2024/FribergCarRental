@@ -1,9 +1,10 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.data;
 using FribergCarRental.Filters;
+using FribergCarRental.Models.ViewModel;
+using FribergCarRental.Services;
 
 namespace FribergCarRental.Areas.Admin.Controllers
 {
@@ -12,10 +13,12 @@ namespace FribergCarRental.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authService;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IAuthService authService)
         {
             _userRepository = userRepository;
+            _authService = authService;
         }
 
         // GET: Admin/Users
@@ -51,14 +54,27 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // POST: Admin/Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Email,Password,Role")] User user)
+        public async Task<IActionResult> Create(RegisterViewModel registerViewModel)
         {
-            if (ModelState.IsValid)
+            if (await _authService.Exists(registerViewModel.Email))
             {
-                await _userRepository.AddAsync(user);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("Email", "E-postadressen används redan.");
             }
-            return View(user);
+
+            if(await _userRepository.AnyAsync(u => u.Username == registerViewModel.Username))
+            {
+                ModelState.AddModelError("Username", "Användarnamnet används redan.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(registerViewModel);
+            }
+
+            await _authService.Register(registerViewModel);
+
+            return RedirectToAction(nameof(Index));
+           
         }
 
         // GET: Admin/Users/Edit/5
@@ -135,7 +151,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
             var user = await _userRepository.GetAsync(id);
             if (user != null)
             {
-                await _userRepository.AddAsync(user);
+                await _userRepository.RemoveAsync(user);
             }
 
             return RedirectToAction(nameof(Index));

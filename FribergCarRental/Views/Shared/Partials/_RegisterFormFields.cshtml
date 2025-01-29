@@ -1,0 +1,71 @@
+﻿@using FribergCarRental.Models.ViewModel
+@model RegisterViewModel
+
+
+@Html.AntiForgeryToken()
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@Html.HiddenFor(m => m.ReturnUrl)
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Email, "E-postadress")
+    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "E-postadress*" })
+    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Username, "Användarnamn")
+    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Användarnamn*" })
+    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Password, "Lösenord")
+    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Lösenord*" })
+    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ConfirmPassword, "Upprepa lösenord")
+    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Upprepa lösenord*" })
+    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.FirstName, "Förnamn")
+    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Förnamn*" })
+    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.LastName, "Efternamn")
+    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Efternamn*" })
+    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Address, "Adress")
+    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Adress*" })
+    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.City, "Ort")
+    @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "Ort*" })
+    @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.PostalCode, "Postnummer")
+    @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control", placeholder = "Postnummer*" })
+    @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Phone, "Telefonnummer")
+    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Telefonnummer*" })
+    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+</div>
+
+<button type="submit" class="btn btn-success btn-block">Registrera</button>
