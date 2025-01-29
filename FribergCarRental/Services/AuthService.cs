@@ -29,7 +29,10 @@ namespace FribergCarRental.Services
         /// </returns>
         public async Task<bool> Login(string username, string password)
         {
-            var user = await _userRepository.FirstOrDefaultAsync(u => (u.Username == username || u.Email == username) && u.Password == password);
+            var normalizedUsername = username.ToLowerInvariant();
+            var user = await _userRepository.FirstOrDefaultAsync(u =>
+                (u.Username.ToLower() == normalizedUsername || u.Email.ToLower() == normalizedUsername)
+                && u.Password == password);
 
             if (user != null)
             {
@@ -56,8 +59,8 @@ namespace FribergCarRental.Services
         {
             var user = new User
             {
-                Username = registerViewModel.Username,
-                Email = registerViewModel.Email,
+                Username = registerViewModel.Username.ToLowerInvariant(),
+                Email = registerViewModel.Email.ToLowerInvariant(),
                 Password = registerViewModel.Password,
                 Contact = new Contact
                 {
@@ -79,9 +82,13 @@ namespace FribergCarRental.Services
                 throw;
             }
 
-            // Login
-            _httpAccessor?.HttpContext?.Session.SetString("User", user.Username);
-            _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
+            // If you aren't logged in as admin, login with the created account.
+            if (!await IsAdmin())
+            {
+                // Login
+                _httpAccessor?.HttpContext?.Session.SetString("User", user.Username);
+                _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
+            }
         }
 
         /// <summary>
@@ -95,7 +102,7 @@ namespace FribergCarRental.Services
         /// </returns>
         public async Task<bool> Exists(string email)
         {
-            return await _userRepository.AnyAsync(u =>  u.Email == email);
+            return await _userRepository.AnyAsync(u => u.Email == email);
         }
 
         /// <summary>
