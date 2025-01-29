@@ -50,6 +50,8 @@ namespace FribergCarRental.Controllers
 
             var model = new CreateBookingViewModel
             {
+                CarModel = car.Model,
+                CarPrice = car.PricePerDay,
                 CarId = carId,
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddDays(1)
@@ -108,6 +110,12 @@ namespace FribergCarRental.Controllers
             if(booking == null)
             {
                 return NotFound("Kan ej hitta angiven bokning");
+            }
+            var currentUser = await _authService.GetCurrentUserId();
+
+            if (booking.UserId != currentUser)
+            {
+                return Problem("Unauthorized");
             }
 
             await _bookingService.RemoveBookingAsync(booking);

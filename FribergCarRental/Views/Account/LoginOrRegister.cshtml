@@ -18,7 +18,10 @@
         <div class="col-md-5">
             <h3 class="text-center">Registrera</h3>
             <hr />
-            @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterForm.cshtml", Model.RegisterViewModel)
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+            {
+                @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterFormFields.cshtml", Model.RegisterViewModel)
+            }
         </div>
     </div>
 </div>

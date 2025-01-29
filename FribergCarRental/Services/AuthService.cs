@@ -8,6 +8,7 @@ namespace FribergCarRental.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpAccessor;
+
         public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContext)
         {
             _userRepository = userRepository;
@@ -36,8 +37,7 @@ namespace FribergCarRental.Services
 
             if (user != null)
             {
-                _httpAccessor?.HttpContext?.Session.SetString("User", user.Username);
-                _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
+                SetLoginSession(user.Username, user.Role);
                 return true;
             }
 
@@ -85,10 +85,19 @@ namespace FribergCarRental.Services
             // If you aren't logged in as admin, login with the created account.
             if (!await IsAdmin())
             {
-                // Login
-                _httpAccessor?.HttpContext?.Session.SetString("User", user.Username);
-                _httpAccessor?.HttpContext?.Session.SetString("Role", user.Role);
+                SetLoginSession(user.Username, user.Email);
             }
+        }
+
+        private void SetLoginSession( string username, string role)
+        {
+            _httpAccessor?.HttpContext?.Session.SetString("User", username);
+            _httpAccessor?.HttpContext?.Session.SetString("Role", role);
+        }
+
+        private string? GetSessionUser()
+        {
+            return _httpAccessor?.HttpContext?.Session.GetString("User");
         }
 
         /// <summary>
@@ -122,7 +131,7 @@ namespace FribergCarRental.Services
         /// </returns>
         public bool IsAuthenticated()
         {
-            var user = _httpAccessor?.HttpContext?.Session.GetString("User");
+            var user = GetSessionUser();
             if (string.IsNullOrEmpty(user))
             {
                 return false;
@@ -139,7 +148,7 @@ namespace FribergCarRental.Services
         /// </returns>
         public async Task<User?> GetCurrentUser()
         {
-            var username = _httpAccessor?.HttpContext?.Session.GetString("User");
+            var username = GetSessionUser();
             if (username == null)
             {
                 return null;
@@ -157,7 +166,7 @@ namespace FribergCarRental.Services
         /// </returns>
         public string GetUsername()
         {
-            var username = _httpAccessor?.HttpContext?.Session.GetString("User");
+            var username = GetSessionUser();
 
             return username;
         }

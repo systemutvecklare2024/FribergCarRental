@@ -10,7 +10,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterForm.cshtml", Model)
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+        {
+            @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterFormFields.cshtml", Model)
+        }
     </div>
 </div>
 

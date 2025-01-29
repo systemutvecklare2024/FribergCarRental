@@ -10,23 +10,30 @@ namespace FribergCarRental.Models.Entities
         // Properties
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Firstname is required")]
+        [Required(ErrorMessage = "Förnamn är obligatoriskt")]
+        [Display(Name = "Förnamn")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Lastname is required")]
+        [Required(ErrorMessage = "Efternamn är obligatoriskt")]
+        [Display(Name = "Efternamn")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Address is required")]
+        [Required(ErrorMessage = "Adress är obligatorisk")]
+        [Display(Name = "Adress")]
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "City is required")]
+        [Required(ErrorMessage = "Ort är obligatoriskt")]
+        [Display(Name = "Ort")]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Postal code is required")]
+        [Required(ErrorMessage = "Postnummer är obligatoriskt")]
         [DataType(DataType.PostalCode)]
+        [Display(Name = "Postnummer")]
         public string PostalCode { get; set; }
 
         [DataType(DataType.PhoneNumber)]
+        [Required(ErrorMessage = "Telefonnummer är obligatoriskt")]
+        [Display(Name = "Telefonnummer")]
         public string Phone { get; set; }
 
         // Navigation

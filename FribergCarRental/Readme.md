@@ -21,4 +21,4 @@ och vad administratören ska kunna göra.
 ### Som administratör vill jag kunna
 - [x] Lista, lägga till, ändra och ta bort bilar
 - lista, lägga till, ändra och ta bort kunder
-- lista och ta bort beställningar.
+- [x] lista och ta bort beställningar.
