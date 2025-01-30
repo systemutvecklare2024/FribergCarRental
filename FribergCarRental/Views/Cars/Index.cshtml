@@ -20,7 +20,6 @@
                 
                 <div class="card-body">
                     <h5 class="card-title">@car.Model</h5>
-                    <p class="card-text">Desc</p>
                     <p class="card-text"><strong>Pris:</strong> @car.PricePerDay SEK per dygn.</p>
                     <a class="btn btn-primary" asp-controller="Booking" asp-action="Create" asp-route-carId="@car.Id">Boka</a>
                 </div>

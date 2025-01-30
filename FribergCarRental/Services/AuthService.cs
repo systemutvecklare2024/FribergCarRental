@@ -89,17 +89,6 @@ namespace FribergCarRental.Services
             }
         }
 
-        private void SetLoginSession( string username, string role)
-        {
-            _httpAccessor?.HttpContext?.Session.SetString("User", username);
-            _httpAccessor?.HttpContext?.Session.SetString("Role", role);
-        }
-
-        private string? GetSessionUser()
-        {
-            return _httpAccessor?.HttpContext?.Session.GetString("User");
-        }
-
         /// <summary>
         /// Checks whether a user with the specified email address exists in the database.
         /// </summary>
@@ -119,8 +108,8 @@ namespace FribergCarRental.Services
         /// </summary>
         public void Logout()
         {
-            _httpAccessor?.HttpContext?.Session.SetString("User", "");
-            _httpAccessor?.HttpContext?.Session.SetString("Role", "");
+            SetSessionKey("User", "");
+            SetSessionKey("Role", "");
         }
 
         /// <summary>
@@ -154,7 +143,14 @@ namespace FribergCarRental.Services
                 return null;
             }
 
-            return await _userRepository.FindByUsername(username);
+            try
+            {
+                return await _userRepository.FindByUsername(username);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -206,6 +202,21 @@ namespace FribergCarRental.Services
                 throw new KeyNotFoundException("Oväntat fel, logga in igen.");
             }
             return user.Id;
+        }
+        private void SetLoginSession(string username, string role)
+        {
+            SetSessionKey("User", username);
+            SetSessionKey("Role", role);
+        }
+
+        private string? GetSessionUser()
+        {
+            return _httpAccessor?.HttpContext?.Session.GetString("User");
+        }
+
+        private void SetSessionKey(string key, string value)
+        {
+            _httpAccessor?.HttpContext?.Session.SetString(key, value);
         }
     }
 }

@@ -105,7 +105,7 @@ body {
 }
 
 .card {
-    min-height: 25rem;
+    height: 100%;
 }
 
 .card-container {

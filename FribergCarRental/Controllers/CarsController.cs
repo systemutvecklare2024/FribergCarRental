@@ -18,12 +18,5 @@ namespace FribergCarRental.Controllers
             var cars = await _carRepository.AllAsync();
             return View(cars);
         }
-
-        // GET: Car/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            var car = await _carRepository.GetAsync(id);
-            return View(car);
-        }
     }
 }

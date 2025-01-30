@@ -4,8 +4,8 @@ namespace FribergCarRental.Models.ViewModel
 {
     public class BookingIndexViewModel
     {
-        public int Id { get; set;
-        }
+        public int Id { get; set; }
+
         [Display(Name = "Bil")]
         public string CarModel { get; set; }
 

@@ -2,7 +2,6 @@
 using FribergCarRental.data;
 using FribergCarRental.Models.Entities;
 using FribergCarRental.Models.ViewModel;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace FribergCarRental.Services
 {

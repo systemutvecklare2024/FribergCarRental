@@ -70,9 +70,9 @@ namespace FribergCarRental.Areas.Admin.Controllers
             {
                 StartDate = DateOnly.FromDateTime(DateTime.Now),
                 EndDate = DateOnly.FromDateTime((DateTime.Now).AddDays(1)),
-                Cars = cars.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
-                Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
-                CarPrices = cars.ToDictionary(c => c.Id, c => c.PricePerDay)
+                Cars = cars?.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
+                Users = users?.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
+                CarPrices = cars?.ToDictionary(c => c.Id, c => c.PricePerDay)
             };
 
             return View(viewModel);
@@ -147,9 +147,9 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 Id = id,
                 StartDate = DateOnly.FromDateTime(DateTime.Now),
                 EndDate = DateOnly.FromDateTime((DateTime.Now).AddDays(1)),
-                Cars = cars.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
-                Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
-                CarPrices = cars.ToDictionary(c => c.Id, c => c.PricePerDay)
+                Cars = cars?.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList(),
+                Users = users?.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList(),
+                CarPrices = cars?.ToDictionary(c => c.Id, c => c.PricePerDay)
             };
 
             return View(viewModel);
