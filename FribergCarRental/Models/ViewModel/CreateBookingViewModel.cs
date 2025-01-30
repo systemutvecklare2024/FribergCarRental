@@ -2,7 +2,7 @@
 
 namespace FribergCarRental.Models.ViewModel
 {
-    public class CreateBookingViewModel
+    public class CreateBookingViewModel : IValidatableObject
     {
         [Display(Name = "Bil")]
         public string? CarModel { get; set; }
@@ -20,5 +20,15 @@ namespace FribergCarRental.Models.ViewModel
         public decimal? CarPrice { get; set; }
 
         public decimal? TotalCost { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (StartDate > EndDate)
+            {
+                yield return new ValidationResult(
+                    "Start datum behöver vara före slut datum.",
+                    new[] { nameof(StartDate), nameof(EndDate) });
+            }
+        }
     }
 }
