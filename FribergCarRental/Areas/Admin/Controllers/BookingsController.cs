@@ -81,7 +81,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // POST: Admin/Bookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarId,UserId,StartDate,EndDate")] AdminBookingViewModel booking)
+        public async Task<IActionResult> Create(AdminBookingViewModel booking)
         {
             if (ModelState.IsValid)
             {
@@ -102,6 +102,25 @@ namespace FribergCarRental.Areas.Admin.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
+            var modelCars = await _carRepository.AllAsync();
+            var cars = modelCars?.Select(c => new
+            {
+                c.Id,
+                c.Model,
+                c.PricePerDay
+            });
+
+            var modelUsers = await _userRepository.AllAsync();
+            var users = modelUsers?.Select(u => new
+            {
+                u.Id,
+                u.Email
+            });
+
+            booking.CarPrices = cars?.ToDictionary(c => c.Id, c => c.PricePerDay);
+            booking.Users = users?.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Email }).ToList();
+            booking.Cars = cars?.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Model }).ToList();
 
             return View(booking);
         }
