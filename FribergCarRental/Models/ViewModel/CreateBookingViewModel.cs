@@ -7,11 +7,11 @@ namespace FribergCarRental.Models.ViewModel
         [Display(Name = "Bil")]
         public string? CarModel { get; set; }
 
-        [Required(ErrorMessage = "Startdatum är obligatoriskt")]
+        [Required(ErrorMessage = "Start datum är obligatoriskt")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
-        [Required(ErrorMessage = "Slutdatum är obligatoriskt.")]
+        [Required(ErrorMessage = "Slut datum är obligatoriskt.")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
@@ -23,11 +23,11 @@ namespace FribergCarRental.Models.ViewModel
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (StartDate > EndDate)
+            if (StartDate >= EndDate)
             {
                 yield return new ValidationResult(
                     "Start datum behöver vara före slut datum.",
-                    new[] { nameof(StartDate), nameof(EndDate) });
+                    new[] { nameof(StartDate) });
             }
         }
     }
