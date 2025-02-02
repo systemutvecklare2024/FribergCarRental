@@ -28,5 +28,10 @@ namespace FribergCarRental.Models.Entities
         // Navigation
         public virtual Contact? Contact { get; set; }
         public ICollection<Booking>? Bookings { get; set; }
+
+        public bool HasBookings()
+        {
+            return Bookings?.Count > 0;
+        }
     }
 }

@@ -24,5 +24,10 @@ namespace FribergCarRental.Models.Entities
 
         // Navigation
         public ICollection<Booking>? Bookings { get; set; }
+
+        public bool HasBookings()
+        {
+            return Bookings?.Count > 0;
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // GET: Admin/Cars
         public async Task<IActionResult> Index()
         {
-            return View(await _carRepository.AllAsync());
+            return View(await _carRepository.AllWithBookingsAsync());
         }
 
         // GET: Admin/Cars/Details/5
@@ -117,10 +117,17 @@ namespace FribergCarRental.Areas.Admin.Controllers
             }
 
             var car = await _carRepository
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .GetWithBookingsAsync(id.Value);
+
             if (car == null)
             {
                 return NotFound();
+            }
+
+            if (car.HasBookings())
+            {
+                // Add Toast?
+                return RedirectToAction(nameof(Index));
             }
 
             return View(car);
@@ -131,7 +138,14 @@ namespace FribergCarRental.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var car = await _carRepository.GetAsync(id);
+            var car = await _carRepository.GetWithBookingsAsync(id);
+
+            if (car == null || car.HasBookings())
+            {
+                // Add Toast?
+                return RedirectToAction(nameof(Index));
+            }
+
             if (car != null)
             {
                 await _carRepository.RemoveAsync(car);

@@ -1,4 +1,5 @@
 ﻿using FribergCarRental.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FribergCarRental.data
 {
@@ -6,6 +7,23 @@ namespace FribergCarRental.data
     {
         public CarRepository(ApplicationDbContext context) : base(context)
         {
+
+        }
+
+        public async Task<IEnumerable<Car>?> AllWithBookingsAsync()
+        {
+            return await dbContext
+                .Set<Car>()
+                .Include(c => c.Bookings)
+                .ToListAsync();
+        }
+
+        public async Task<Car?> GetWithBookingsAsync(int id)
+        {
+            return await dbContext
+                .Set<Car>()
+                .Include(c => c.Bookings)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

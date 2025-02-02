@@ -24,7 +24,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
         // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
-            return View(await _userRepository.AllAsync());
+            return View(await _userRepository.AllWithBookingsAsync());
         }
 
         // GET: Admin/Users/Details/5
@@ -61,7 +61,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 ModelState.AddModelError("Email", "E-postadressen används redan.");
             }
 
-            if(await _userRepository.AnyAsync(u => u.Username == registerViewModel.Username))
+            if (await _userRepository.AnyAsync(u => u.Username == registerViewModel.Username))
             {
                 ModelState.AddModelError("Username", "Användarnamnet används redan.");
             }
@@ -74,7 +74,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
             await _authService.Register(registerViewModel);
 
             return RedirectToAction(nameof(Index));
-           
+
         }
 
         // GET: Admin/Users/Edit/5
@@ -134,10 +134,17 @@ namespace FribergCarRental.Areas.Admin.Controllers
             }
 
             var user = await _userRepository
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .GetWithBookingsAsync(id.Value);
+
             if (user == null)
             {
                 return NotFound();
+            }
+
+            if (id == 1 || user.HasBookings())
+            {
+                // Add a toast?
+                return RedirectToAction(nameof(Index));
             }
 
             return View(user);
@@ -148,6 +155,12 @@ namespace FribergCarRental.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (id == 1)
+            {
+                // Add toast?
+                return RedirectToAction(nameof(Index));
+            }
+
             var user = await _userRepository.GetAsync(id);
             if (user != null)
             {

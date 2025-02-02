@@ -11,7 +11,25 @@ namespace FribergCarRental.data
 
         public async Task<User?> FindByUsername(string username)
         {
-            return await dbContext.Set<User>().FirstOrDefaultAsync(x => x.Username == username);
+            return await dbContext
+                .Set<User>()
+                .FirstOrDefaultAsync(x => x.Username == username);
+        }
+
+        public async Task<IEnumerable<User?>> AllWithBookingsAsync()
+        {
+            return await dbContext
+                .Set<User>()
+                .Include(u => u.Bookings)
+                .ToListAsync();
+        }
+
+        public async Task<User?> GetWithBookingsAsync(int id)
+        {
+            return await dbContext
+                .Set<User>()
+                .Include(u => u.Bookings)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }
