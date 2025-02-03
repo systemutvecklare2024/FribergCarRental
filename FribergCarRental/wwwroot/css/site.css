@@ -32,6 +32,10 @@ body {
     border-radius: 8px;
 }
 
+.bg-custom {
+    background: #98A6AA;
+}
+
 .hero img {
     max-width: 150px;
     margin-bottom: 20px;
