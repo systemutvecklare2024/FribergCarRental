@@ -7,6 +7,8 @@ namespace FribergCarRental.Models.ViewModel
         [Display(Name = "Bil")]
         public string? CarModel { get; set; }
 
+        public string? CarImage { get; set; }
+
         [Required(ErrorMessage = "Start datum är obligatoriskt")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }

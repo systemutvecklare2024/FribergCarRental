@@ -52,6 +52,7 @@ namespace FribergCarRental.Controllers
             {
                 CarModel = car.Model,
                 CarPrice = car.PricePerDay,
+                CarImage = car.ImageUrl,
                 CarId = carId,
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddDays(1)

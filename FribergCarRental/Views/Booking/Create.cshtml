@@ -2,38 +2,66 @@
 @model CreateBookingViewModel
 
 @{
-    ViewData["Title"] = $"Boka {Model.CarModel}";
+    ViewData["Title"] = $"Boka";
 }
 
-<h1>Boka</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Boka bil</h3>
+                </div>
 
-<div class="container mt-3">
-    <h2>@Model.CarModel</h2>
-    @using (Html.BeginForm("Create", "Booking", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
+                <div class="row g-0">
+                    <!-- Left Side! -->
+                    <div class="col-md-5 d-flex flex-column align-items-center p-3">
+                        <img class="card-img-top rounded mb-3" src="@Model.CarImage" alt="@Model.CarModel" />
 
-        @Html.HiddenFor(m => m.CarId)
+                        <ul class="list-group w-100">
+                            <li class="list-group-item"><strong>Modell: </strong>@Model.CarModel</li>
+                            <li class="list-group-item"><strong>Pris per dygn: </strong>@Model.CarPrice Kr</li>
+                        </ul>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.StartDate, "Start datum")
-            <input type="date" class="form-control" name="StartDate" id="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
-            @Html.ValidationMessageFor(m => m.StartDate, null, new { @class = "text-danger" })
+                    <!-- Right Side! -->
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            @using (Html.BeginForm("Create", "Booking", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.HiddenFor(m => m.CarId)
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.StartDate, "Start datum")
+                                    <input type="date" class="form-control" name="StartDate" id="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                                    @Html.ValidationMessageFor(m => m.StartDate, null, new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.EndDate, "Slut datum")
+                                    <input type="date" class="form-control" name="EndDate" id="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+                                    @Html.ValidationMessageFor(m => m.EndDate, null, new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="TotalCost" class="control-label">Total kostnad</label>
+                                    <input disabled class="form-control" id="TotalCost" />
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Boka</button>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.EndDate, "Slut datum")
-            <input type="date" class="form-control" name="EndDate" id="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
-            @Html.ValidationMessageFor(m => m.EndDate, null, new { @class = "text-danger" })
-        </div>
+    </div>
 
-        <div class="form-group">
-            <label for="TotalCost" class="control-label">Total kostnad</label>
-            <input disabled class="form-control" id="TotalCost" />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Boka</button>
-    }
 </div>
 
 @section Scripts {
