@@ -208,7 +208,7 @@ namespace FribergCarRental.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var booking = await _bookingService.GetByIdAsync(id.Value);
+            var booking = await _bookingService.GetBookingByIdWithDetailAsync(id.Value);
             if (booking == null)
             {
                 return NotFound();
