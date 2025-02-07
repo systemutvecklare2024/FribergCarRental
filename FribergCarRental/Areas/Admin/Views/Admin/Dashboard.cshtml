@@ -1,0 +1,74 @@
+﻿@using FribergCarRental.Areas.Admin.Models
+@model AdminDashboardViewModel;
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Dashboard</h2>
+
+    <div class="row">
+        <!-- Bookings Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Bokningar</h5>
+                    <p class="card-text">Hantera bokningar.</p>
+                    <a asp-area="Admin" asp-controller="Bookings" asp-action="Index" class="btn btn-primary">Se bokningar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cars Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Bilar</h5>
+                    <p class="card-text">Hantera bilar.</p>
+                    <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="btn btn-primary">Se bilar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Användare</h5>
+                    <p class="card-text">Hantera användare.</p>
+                    <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-primary">Se användare</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Statistics  -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-light text-dark shadow-sm">
+                <div class="card-body text-center">
+                    <h6>Antal bokningar</h6>
+                    <h3>@Model.BookingsCount</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light text-dark shadow-sm">
+                <div class="card-body text-center">
+                    <h6>Antal bilar</h6>
+                    <h3>@Model.CarsCount</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light text-dark shadow-sm">
+                <div class="card-body text-center">
+                    <h6>Antal användare</h6>
+                    <h3>@Model.UsersCount</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
