@@ -1,0 +1,72 @@
+﻿@using FribergCarRental.Models.ViewModel
+@model UserViewModel
+
+<div class="col-md-5">
+    <h3 class="text-center">Kontouppgifter</h3>
+    <hr />
+
+    @if (ViewBag.Warning != null)
+    {
+        <div class="alert alert-warning text-center">
+            <strong>Varning:</strong> @ViewBag.Warning
+        </div>
+    }
+
+    @using (Html.BeginForm("EditUser", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(u => u.Id)
+
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-12">
+                    @Html.LabelFor(m => m.Username, new
+                        {
+                            @class = "form-label mb-0"
+                        })
+                    @Html.TextBoxFor(m => m.Username, new
+                        {
+                            @class = "form-control",
+                            @disabled = "disabled"
+                        })
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    @Html.LabelFor(m => m.Email, new
+                        {
+                            @class = "form-label mb-0"
+                        })
+                    @Html.TextBoxFor(m => m.Email, new
+                        {
+                            @class = "form-control",
+                            @disabled = "disabled"
+                        })
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    @Html.LabelFor(m => m.Password, new
+                        {
+                            @class = "form-label mb-0"
+                        })
+                    @Html.PasswordFor(m => m.Password, new
+                        {
+                            @class = "form-control"
+                        })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    @Html.LabelFor(m => m.PasswordConfirmed, new
+                        {
+                            @class = "form-label mb-0"
+                        })
+                    @Html.PasswordFor(m => m.PasswordConfirmed, new
+                        {
+                            @class = "form-control"
+                        })
+                    @Html.ValidationMessageFor(m => m.PasswordConfirmed, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Spara</button>
+        </div>
+    }
+</div>
+
+
