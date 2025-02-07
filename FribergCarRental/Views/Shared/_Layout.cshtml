@@ -1,37 +1,40 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FribergCarRental</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/FribergCarRental.styles.css" asp-append-version="true" />
+    <!--<link rel="stylesheet" href="~/FribergCarRental.styles.css" asp-append-version="true" /> -->
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        @await Html.PartialAsync("~/Views/Shared/Partials/_Navigation.cshtml")
-    </header>
+    <div class="wrapper">
+        <header>
+            @await Html.PartialAsync("~/Views/Shared/Partials/_Navigation.cshtml")
+        </header>
 
-    <div class="container">
-        <main role="main" class="main-padding">
-            @RenderBody()
+
+        <main role="main" class="content">
+            <div class="container">
+                @RenderBody()
+            </div>
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            <p>&copy; 2025 Friberg Car Rentals. All rights reserved.</p>
-            <p>
-                <a asp-area="" asp-controller="Home" asp-action="Terms">Terms of Service</a>
-                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
-            </p>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+        <footer class="footer custom-footer border-top bg-light">
+            <div class="container">
+                <p>&copy; 2025 Friberg Car Rentals. All rights reserved.</p>
+                <p>
+                    <a asp-area="" asp-controller="Home" asp-action="Terms">Användarvillkor</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">Integritetspolicy</a>
+                </p>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </div>
 </body>
 </html>
