@@ -2,7 +2,7 @@
 {
     public class AccountViewModel
     {
-        public LoginViewModel LoginViewModel { get; set; }
-        public RegisterViewModel RegisterViewModel { get; set; }
+        public ContactViewModel ContactViewModel { get; set; }
+        public UserViewModel UserViewModel { get; set; }
     }
 }

@@ -153,6 +153,12 @@ namespace FribergCarRental.Services
             }
         }
 
+        public async Task<User?> GetAccount()
+        {
+            var username = GetUsername();
+            return await _userRepository.GetAccount(username);
+        }
+
         /// <summary>
         /// Retrieves the username of the currently authenticated user from the session data 
         /// and returns it in a capitalized format.

@@ -9,7 +9,7 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 mb-5">
         @using (Html.BeginForm("Register", "Account", FormMethod.Post))
         {
             @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterFormFields.cshtml", Model)

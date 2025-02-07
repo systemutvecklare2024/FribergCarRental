@@ -31,5 +31,13 @@ namespace FribergCarRental.data
                 .Include(u => u.Bookings)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
+
+        public async Task<User?> GetAccount(string username)
+        {
+            return await dbContext
+                .Set<User>()
+                .Include(u => u.Contact)
+                .FirstOrDefaultAsync(u => u.Username == username.ToLower());
+        }
     }
 }

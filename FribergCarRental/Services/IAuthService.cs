@@ -14,5 +14,6 @@ namespace FribergCarRental.Services
         Task<bool> IsAdmin();
         public string GetUsername();
         Task<bool> Exists(string account);
+        Task<User?> GetAccount();
     }
 }

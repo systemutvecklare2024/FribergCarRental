@@ -1,1 +1,30 @@
-﻿
+﻿@using FribergCarRental.Models.ViewModel
+@model AccountViewModel
+
+@{
+    ViewData["title"] = "Profil";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="container mt-3">
+    <div class="row justify-content-center mb-5">
+        
+        <!-- User form -->
+        @await Component.InvokeAsync("UserForm")
+
+        <!-- Contact form-->
+        @await Component.InvokeAsync("ContactForm")
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
