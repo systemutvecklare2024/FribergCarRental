@@ -5,29 +5,19 @@
     ViewData["Title"] = "Logga in eller Registrera";
 }
 
-<div class="container mt-3">
-    <div class="row justify-content-center mb-5">
+<div class="container d-flex min-vh-100">
+    <div class="row w-100 align-items-start">
         <!-- Login Form -->
-        <div class="col-md-5">
-            <h3 class="text-center">Logga in</h3>
-            <hr />
-            @await Html.PartialAsync("~/Views/Shared/Partials/_LoginForm.cshtml", Model.LoginViewModel)
-        </div>
+        @await Html.PartialAsync("~/Views/Shared/Partials/_LoginForm.cshtml", Model.LoginViewModel)
 
         <!-- Register Form -->
-        <div class="col-md-5">
-            <h3 class="text-center">Registrera</h3>
-            <hr />
-            @using (Html.BeginForm("Register", "Account", FormMethod.Post))
-            {
-                @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterFormFields.cshtml", Model.RegisterViewModel)
-            }
-        </div>
+        @await Html.PartialAsync("~/Views/Shared/Partials/_RegisterFormFields.cshtml", Model.RegisterViewModel)
+
     </div>
 </div>
 
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

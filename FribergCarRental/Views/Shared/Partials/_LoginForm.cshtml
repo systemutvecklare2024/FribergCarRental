@@ -1,23 +1,36 @@
 ﻿@using FribergCarRental.Models.ViewModel
 @model LoginViewModel
 
-@using (Html.BeginForm("Login", "Account", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+<div class="col-md-6">
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
+            <h4>Logga in</h4>
+        </div>
+        <div class="card-body">
 
-    @Html.HiddenFor(m => m.ReturnUrl)
+            <!-- LoginForm -->
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, "E-postadress")
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "E-postadress*" })
-        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(m => m.ReturnUrl)
+
+                <div class="mb-2">
+                    @Html.LabelFor(m => m.Email, "E-postadress")
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "E-postadress*" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-2">
+                    @Html.LabelFor(m => m.Password, "Lösenord")
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Lösenord*" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Logga in</button>
+            }
+        </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, "Lösenord")
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Lösenord*" })
-        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-    </div>
-
-    <button type="submit" class="btn btn-primary btn-block">Logga in</button>
-}
+</div>

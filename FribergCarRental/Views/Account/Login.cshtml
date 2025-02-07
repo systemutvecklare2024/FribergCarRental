@@ -4,11 +4,8 @@
 @{
     ViewData["Title"] = "Logga in";
 }
-
-<h1>Login</h1>
-
-<div class="row">
-    <div class="col-md-4 mb-5">        
+<div class="container d-flex justify-content-center">
+    <div class="row w-100 justify-content-center">
         @await Html.PartialAsync("~/Views/Shared/Partials/_LoginForm.cshtml", Model)
     </div>
 </div>

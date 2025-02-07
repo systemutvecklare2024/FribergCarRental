@@ -62,7 +62,7 @@ namespace FribergCarRental.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid account or password.");
+                    ModelState.AddModelError("", "Ogiltigt konto eller lösenord.");
                 }
             }
             return View(loginViewModel);
