@@ -1,0 +1,129 @@
+@import "_variables.scss";
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html, body {
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 0;
+    padding: 0;
+}
+
+.call-to-action {
+    background-color: $primary;
+    border-color: $primary;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
+    padding: 0.75rem 1.5rem;
+}
+
+.call-to-action:hover {
+    background-color: $blue-500;
+    border-color: $blue-400;
+}
+
+.hero {
+    background: linear-gradient(to bottom right, #101F24, #E4ECEF);
+    color: #FFFFFF;
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.hero img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .hero img {
+        max-width: 400px;
+    }
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+// Footer
+.custom-footer {
+    background-color: $footer-bg-color !important;
+}
+
+.footer {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer p {
+    line-height: 24px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+//////////////////////
+
+.text-shadow {
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 1);
+}
+
+.dropdown-margin {
+    margin-left: 1rem;
+}
+
+.navbar-margin {
+    padding: 0.5rem 4rem;
+}
+
+.main-padding {
+    padding-bottom: 7rem !important;
+}
+
+.card {
+    height: 100%;
+}
+
+.card-container {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    margin-bottom: 0.5rem;
+}
+
+.icon-margin {
+    margin-left: 8px;
+}

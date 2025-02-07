@@ -1,0 +1,60 @@
+// Import bootstrap core stuff
+@import "../lib/bootstrap/scss/_functions.scss";
+@import "../lib/bootstrap/scss/_variables.scss";
+
+// Custom Bootstrap theme for Friberg Car Rentals
+$primary: $blue-600;
+$secondary: $gray-500;
+$success: $green-500; 
+$danger: $red-400; 
+$warning: $yellow-400;
+$dark: $gray-200; 
+$light: $gray-900;
+$nav-bg: $gray-100;
+$footer-bg: $gray-100;
+
+// Text Colors
+$body-color: $gray-800;
+$headings-color: $gray-700;
+$link-color: $primary;
+$text-muted: $gray-500;
+$navbar-light-color: $gray-900;
+$footer-color: $gray-800;
+
+// Dropdown Styling
+$dropdown-bg: $white;
+$dropdown-border-color: $gray-300;
+$dropdown-link-color: $gray-900;
+$dropdown-hover-bg: $gray-200;
+$dropdown-hover-color: $gray-900;
+
+// Cards
+$card-bg: $white;
+$card-border-color: $gray-300;
+$card-header-bg: $primary;
+$card-header-color: $white;
+$list-group-bg: $gray-100;
+
+// Call to action
+$btn-primary-bg: $primary;
+$btn-primary-border: $primary;
+$btn-primary-hover-bg: $blue-500;
+$btn-primary-hover-border: $blue-400;
+$btn-primary-font-weight: bold;
+$btn-primary-padding-y: 0.75rem;
+$btn-primary-padding-x: 1.5rem;
+$btn-primary-border-radius: 0.5rem;
+$btn-primary-box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+
+// Override Bootstrap variables
+$body-bg: $dark;
+$input-bg: $white;
+$input-border-color: $gray-400;
+$input-box-shadow: none;
+$navbar-light-bg: $gray-100;
+$footer-bg-color: $footer-bg;
+
+
+
+// Import Bootstrap to apply changes
+@import "../lib/bootstrap/scss/bootstrap.scss";
